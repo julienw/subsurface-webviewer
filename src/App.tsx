@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Login } from "./Login";
+import { DataLoader } from "./DataLoader";
 import { getLogin } from "./store/loginSlice";
 import "./App.css";
 
@@ -12,6 +13,7 @@ function App() {
     <div className="App">
       <h1>Vite + React</h1>
       <Login />
+      <DataLoader />
       <div className="card">
         {login ? <>Hello {login}!</> : null}
         <button onClick={() => setCount((count) => count + 1)}>
