@@ -12,7 +12,7 @@ export const fetchDataForUser = createAsyncThunk(
       throw new Error("No user has been provided");
     }
     const url = getDataUrl(user);
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
       scriptElement.src = url;
       scriptElement.addEventListener(
@@ -25,6 +25,7 @@ export const fetchDataForUser = createAsyncThunk(
         },
         { once: true }
       );
+      scriptElement.addEventListener("error", (e) => reject(e.error));
       document.head.append(scriptElement);
     });
   }
