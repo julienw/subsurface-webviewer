@@ -3,7 +3,7 @@ import type { RootState } from ".";
 
 export const loginSlice = createSlice({
   name: "login",
-  initialState: { value: "" },
+  initialState: { value: null },
   reducers: {
     setLogin: (state, action) => {
       state.value = action.payload;

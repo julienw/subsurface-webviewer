@@ -12,7 +12,9 @@ export function DataLoader() {
   const login = useAppSelector(getLogin);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchDataForUser(login));
+    if (login) {
+      dispatch(fetchDataForUser(login));
+    }
   }, [login]);
 
   return null;
