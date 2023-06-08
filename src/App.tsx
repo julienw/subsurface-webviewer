@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Localized } from "@fluent/react";
 import { Login } from "./Login";
 import { DataLoader } from "./DataLoader";
 import { getLogin } from "./store/loginSlice";
@@ -11,21 +12,13 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Vite + React</h1>
+      <h1>
+        <Localized id="main-title" />
+      </h1>
+      <Localized id="welcome-to-subsurface" />
       <Login />
       <DataLoader />
-      <div className="card">
-        {login ? <>Hello {login}!</> : null}
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {login ? <Localized id="hello-user" vars={{ user: login }} /> : null}
     </div>
   );
 }

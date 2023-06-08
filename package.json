@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fluent/bundle": "^0.18.0",
+    "@fluent/langneg": "^0.7.0",
+    "@fluent/react": "^0.15.1",
     "@reduxjs/toolkit": "^1.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
