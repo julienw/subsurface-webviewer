@@ -4,6 +4,7 @@ import { Localized } from "@fluent/react";
 import { Login } from "./Login";
 import { DataLoader } from "./DataLoader";
 import { getLogin } from "./store/loginSlice";
+import { DiveList } from "./DiveList";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Login />
       <DataLoader />
       {login ? <Localized id="hello-user" vars={{ user: login }} /> : null}
+      <DiveList />
     </div>
   );
 }

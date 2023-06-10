@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import fakeData from "../mock-data/julien";
 import type { RootState } from ".";
+import type { Trip } from "../types";
 
 function getDataUrl(user: string) {
   return `https://cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js`;
@@ -11,6 +13,11 @@ export const fetchDataForUser = createAsyncThunk(
     if (!user) {
       throw new Error("No user has been provided");
     }
+
+    if (window.location.search.includes("fake")) {
+      return fakeData;
+    }
+
     const url = getDataUrl(user);
     return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
@@ -30,61 +37,6 @@ export const fetchDataForUser = createAsyncThunk(
     });
   }
 );
-
-// [timestamp in sec, depth in mm, tank pressure in mbar, temperature in mkelvin]
-type Sample = [number, number, number, number];
-
-interface DiveEvent {
-  name: string; // gaschange, surface
-  value: string;
-  type: string;
-  time: string;
-}
-
-interface DiveComputer {
-  model: string;
-  deviceid: string;
-  diveid: string;
-}
-
-interface Dive {
-  number: number;
-  subsurface_number: number;
-  date: string;
-  time: string;
-  location: string;
-  rating: number;
-  visibility: number;
-  current: number;
-  wavesize: number;
-  surge: number;
-  chill: number;
-  dive_duration: string;
-  temperature: {
-    air: string;
-    water: string;
-  };
-  buddy: string;
-  divemaster: string;
-  suit: string;
-  tags: string[];
-  Cylinders: unknown;
-  Weights: unknown;
-  maxdepth: number; // mm
-  duration: number; // seconds
-  samples: Sample[];
-  events: DiveEvent[];
-  sac: string; // really a number
-  otu: string; // really a number
-  cns: string; // really a number
-  divecomputers: DiveComputer;
-  notes: string;
-}
-
-interface Trip {
-  name: string;
-  dives: Dive[];
-}
 
 interface DataState {
   data: Trip[] | null;
