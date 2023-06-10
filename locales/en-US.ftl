@@ -2,3 +2,5 @@
 main-title = { -brand-name }
 welcome-to-subsurface = Welcome to { -brand-name }
 hello-user = Hello { $user }!
+hide-dive = Hide
+show-dive = Show

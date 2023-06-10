@@ -1,6 +1,22 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Localized } from "@fluent/react";
 import { type RootState } from "./store";
-import { type Trip } from "./types";
+import type { Trip, Dive } from "./types";
+import "./DiveList.css";
+
+function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
+  const [shown, toggleShow] = useState(false);
+
+  return (
+    <label className="dive-line">
+      {trip.name}: ({dive.number}) {dive.location}
+      <button type="button" onClick={() => toggleShow(!shown)}>
+        <Localized id={shown ? "hide-dive" : "show-dive"} />
+      </button>
+    </label>
+  );
+}
 
 function TripInfo({ trip }: { trip: Trip }) {
   return (
@@ -9,9 +25,7 @@ function TripInfo({ trip }: { trip: Trip }) {
         .slice()
         .reverse()
         .map((dive) => (
-          <div>
-            {trip.name}: ({dive.number}) {dive.location}
-          </div>
+          <Dive trip={trip} dive={dive} />
         ))}
     </>
   );
