@@ -42,10 +42,21 @@ function DiveGraph({ dive }: { dive: Dive }) {
         }}
       />
       <Bar
-        data={{ datasets: [{ data: speeds }] }}
+        data={{
+          datasets: [
+            {
+              data: speeds,
+              barPercentage: 1,
+              categoryPercentage: 1,
+            },
+          ],
+        }}
         options={{
           parsing: { xAxisKey: "time", yAxisKey: "speed" },
-          scales: { x: { type: "linear" }, y: { type: "linear" } },
+          scales: {
+            x: { type: "linear" },
+            y: { type: "linear" },
+          },
         }}
       />
     </div>
