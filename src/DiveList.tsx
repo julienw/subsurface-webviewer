@@ -2,12 +2,21 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Localized } from "@fluent/react";
 import "chart.js/auto";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import "./DiveList.css";
 
 function DiveGraph({ dive }: { dive: Dive }) {
+  const { samples } = dive;
+  const speeds = [];
+  for (let i = 1; i < samples.length; i++) {
+    const interval = (samples[i][0] - samples[i - 1][0]) / 60;
+    const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
+    const speed = -diff / interval;
+    speeds.push({ speed, time: samples[i][0] });
+  }
+
   return (
     <div>
       <Line
@@ -30,6 +39,13 @@ function DiveGraph({ dive }: { dive: Dive }) {
             },
             x: { type: "linear" },
           },
+        }}
+      />
+      <Bar
+        data={{ datasets: [{ data: speeds }] }}
+        options={{
+          parsing: { xAxisKey: "time", yAxisKey: "speed" },
+          scales: { x: { type: "linear" }, y: { type: "linear" } },
         }}
       />
     </div>
