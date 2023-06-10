@@ -31,7 +31,8 @@ export const fetchDataForUser = createAsyncThunk(
   }
 );
 
-type Sample = [number, number, number, number]; // [timestamp, depth, ??, ??]
+// [timestamp in sec, depth in mm, tank pressure in mbar, temperature in mkelvin]
+type Sample = [number, number, number, number];
 
 interface DiveEvent {
   name: string; // gaschange, surface
