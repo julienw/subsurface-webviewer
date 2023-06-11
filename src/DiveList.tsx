@@ -7,7 +7,7 @@ import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import "./DiveList.css";
 
-function DiveGraph({ dive }: { dive: Dive }) {
+function DiveGraphs({ dive }: { dive: Dive }) {
   const { samples } = dive;
   const speeds = [];
   for (let i = 1; i < samples.length; i++) {
@@ -74,7 +74,7 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
       </label>
-      {shown ? <DiveGraph dive={dive} /> : null}
+      {shown ? <DiveGraphs dive={dive} /> : null}
     </>
   );
 }
