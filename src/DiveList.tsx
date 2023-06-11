@@ -13,7 +13,10 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
       data={{
         datasets: [
           {
-            data: samples.map(([time, depth]) => ({ time, depth })),
+            data: samples.map(([time, depth]) => ({
+              time,
+              depth: depth / 1000,
+            })),
           },
         ],
       }}
@@ -65,13 +68,87 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   );
 }
 
-function DiveGraphs({ dive }: { dive: Dive }) {
-  const { samples } = dive;
+function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
+  const data = samples
+    .filter(([_time, _depth, _pressure, temperaturemK]) => temperaturemK)
+    .map(([time, _depth, _pressure, temperaturemK]) => ({
+      time,
+      temperature: temperaturemK / 1000 - 173.15,
+    }));
 
+  if (!data.length) {
+    return null;
+  }
+
+  return (
+    <Line
+      data={{
+        datasets: [
+          {
+            data,
+          },
+        ],
+      }}
+      options={{
+        parsing: {
+          xAxisKey: "time",
+          yAxisKey: "temperature",
+        },
+        scales: {
+          y: {
+            type: "linear",
+          },
+          x: { type: "linear" },
+        },
+      }}
+    />
+  );
+}
+
+function TankGraph({ dive: { samples } }: { dive: Dive }) {
+  const data = samples
+    .filter(([_time, _depth, pressure]) => pressure)
+    .map(([time, _depth, pressure]) => ({
+      time,
+      pressure: pressure / 1000,
+    }));
+
+  if (!data.length) {
+    return null;
+  }
+
+  return (
+    <Line
+      data={{
+        datasets: [
+          {
+            data,
+          },
+        ],
+      }}
+      options={{
+        parsing: {
+          xAxisKey: "time",
+          yAxisKey: "pressure",
+        },
+        scales: {
+          y: {
+            type: "linear",
+          },
+          x: { type: "linear" },
+        },
+      }}
+    />
+  );
+}
+
+function DiveGraphs({ dive }: { dive: Dive }) {
   return (
     <div>
       <DepthGraph dive={dive} />
       <SpeedGraph dive={dive} />
+      <TemperatureGraph dive={dive} />
+      <TankGraph dive={dive} />
     </div>
   );
 }
