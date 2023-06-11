@@ -7,8 +7,34 @@ import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import "./DiveList.css";
 
-function DiveGraphs({ dive }: { dive: Dive }) {
-  const { samples } = dive;
+function DepthGraph({ dive: { samples } }: { dive: Dive }) {
+  return (
+    <Line
+      data={{
+        datasets: [
+          {
+            data: samples.map(([time, depth]) => ({ time, depth })),
+          },
+        ],
+      }}
+      options={{
+        parsing: {
+          xAxisKey: "time",
+          yAxisKey: "depth",
+        },
+        scales: {
+          y: {
+            type: "linear",
+            reverse: true,
+          },
+          x: { type: "linear" },
+        },
+      }}
+    />
+  );
+}
+
+function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   const speeds = [];
   for (let i = 1; i < samples.length; i++) {
     const interval = (samples[i][0] - samples[i - 1][0]) / 60;
@@ -18,47 +44,34 @@ function DiveGraphs({ dive }: { dive: Dive }) {
   }
 
   return (
+    <Bar
+      data={{
+        datasets: [
+          {
+            data: speeds,
+            barPercentage: 1,
+            categoryPercentage: 1,
+          },
+        ],
+      }}
+      options={{
+        parsing: { xAxisKey: "time", yAxisKey: "speed" },
+        scales: {
+          x: { type: "linear" },
+          y: { type: "linear" },
+        },
+      }}
+    />
+  );
+}
+
+function DiveGraphs({ dive }: { dive: Dive }) {
+  const { samples } = dive;
+
+  return (
     <div>
-      <Line
-        data={{
-          datasets: [
-            {
-              data: dive.samples.map(([time, depth]) => ({ time, depth })),
-            },
-          ],
-        }}
-        options={{
-          parsing: {
-            xAxisKey: "time",
-            yAxisKey: "depth",
-          },
-          scales: {
-            y: {
-              type: "linear",
-              reverse: true,
-            },
-            x: { type: "linear" },
-          },
-        }}
-      />
-      <Bar
-        data={{
-          datasets: [
-            {
-              data: speeds,
-              barPercentage: 1,
-              categoryPercentage: 1,
-            },
-          ],
-        }}
-        options={{
-          parsing: { xAxisKey: "time", yAxisKey: "speed" },
-          scales: {
-            x: { type: "linear" },
-            y: { type: "linear" },
-          },
-        }}
-      />
+      <DepthGraph dive={dive} />
+      <SpeedGraph dive={dive} />
     </div>
   );
 }
