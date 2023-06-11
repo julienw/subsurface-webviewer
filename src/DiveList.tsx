@@ -142,6 +142,42 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
   );
 }
 
+function AirConsommationGraph({ dive: { samples } }: { dive: Dive }) {
+  const input = samples
+    .filter(([_time, _depth, pressure]) => pressure)
+    .map(([time, _depth, pressure]) => ({
+      time,
+      pressure: pressure / 1000,
+    }));
+
+  if (!input.length) {
+    return null;
+  }
+
+  const consommation = [];
+
+  return (
+    <Bar
+      data={{
+        datasets: [
+          {
+            data: consommation,
+            barPercentage: 1,
+            categoryPercentage: 1,
+          },
+        ],
+      }}
+      options={{
+        parsing: { xAxisKey: "time", yAxisKey: "" },
+        scales: {
+          x: { type: "linear" },
+          y: { type: "linear" },
+        },
+      }}
+    />
+  );
+}
+
 function DiveGraphs({ dive }: { dive: Dive }) {
   return (
     <div>
@@ -149,6 +185,7 @@ function DiveGraphs({ dive }: { dive: Dive }) {
       <SpeedGraph dive={dive} />
       <TemperatureGraph dive={dive} />
       <TankGraph dive={dive} />
+      <AirConsommationGraph dive={dive} />
     </div>
   );
 }
