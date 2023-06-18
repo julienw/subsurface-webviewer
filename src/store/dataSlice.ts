@@ -3,14 +3,15 @@ import fakeData from "../mock-data/julien";
 import type { RootState } from ".";
 import type { Trip } from "../types";
 
-function getDataUrl(user: string) {
-  return `https://cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js`;
+function getDataUrl({ user, password }: { user: string; password: string }) {
+  const auth = encodeURIComponent(user) + ":" + encodeURIComponent(password);
+  return `https://${auth}@cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js`;
 }
 
 export const fetchDataForUser = createAsyncThunk(
   "data/fetchDataStatus",
-  (user: string) => {
-    if (!user) {
+  (login: { user: string; password: string }) => {
+    if (!login.user) {
       throw new Error("No user has been provided");
     }
 
@@ -18,7 +19,7 @@ export const fetchDataForUser = createAsyncThunk(
       return fakeData;
     }
 
-    const url = getDataUrl(user);
+    const url = getDataUrl(login);
     return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
       scriptElement.src = url;

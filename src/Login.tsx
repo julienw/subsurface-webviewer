@@ -1,17 +1,20 @@
 import type { SyntheticEvent } from "react";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "./store/hooks";
-import { getLogin, setLogin } from "./store/loginSlice";
+import { setLogin } from "./store/loginSlice";
 import "./Login.css";
 
 export function Login() {
-  const loginFromStore = useAppSelector(getLogin);
+  const loginFromStore = useAppSelector((state) => state.login);
   const loadingFailed = useAppSelector(
     (state) => state.data.loading === "failed"
   );
   const [openFromForm, setOpenFromForm] = useState(null as null | boolean);
-  const [loginFromForm, setLoginFromForm] = useState(
-    loginFromStore ?? localStorage.login ?? ""
+  const [userFromForm, setUserFromForm] = useState(
+    loginFromStore?.user ?? localStorage.login ?? ""
+  );
+  const [passwordFromForm, setPasswordFromForm] = useState(
+    loginFromStore?.password ?? ""
   );
   const [persistFromForm, setPersistFromForm] = useState(
     "login" in localStorage
@@ -20,23 +23,23 @@ export function Login() {
   const dispatch = useAppDispatch();
   const onFormSubmit = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
-    dispatch(setLogin(loginFromForm));
+    dispatch(setLogin({ user: userFromForm, password: passwordFromForm }));
     setOpenFromForm(false);
 
     // Possibly persist in localStorage
     if (persistFromForm) {
-      localStorage.login = loginFromForm;
+      localStorage.login = userFromForm;
     }
   };
 
   const onFormReset = (e: SyntheticEvent<HTMLFormElement>) => {
     dispatch(setLogin(null));
     delete localStorage.login;
-    setLoginFromForm("");
+    setUserFromForm("");
     setPersistFromForm(false);
   };
 
-  const open = loadingFailed || (openFromForm ?? !loginFromForm);
+  const open = loadingFailed || (openFromForm ?? !userFromForm);
 
   return (
     <details
@@ -55,9 +58,18 @@ export function Login() {
         <label>
           Subsurface login:{" "}
           <input
-            name="login-input"
-            onChange={(e) => setLoginFromForm(e.currentTarget.value)}
-            value={loginFromForm}
+            name="user-input"
+            onChange={(e) => setUserFromForm(e.currentTarget.value)}
+            value={userFromForm}
+          />
+        </label>
+        <label>
+          Password:{" "}
+          <input
+            name="password-input"
+            type="password"
+            onChange={(e) => setPasswordFromForm(e.currentTarget.value)}
+            value={passwordFromForm}
           />
         </label>
         <label>

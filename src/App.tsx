@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { Localized } from "@fluent/react";
 import { Login } from "./Login";
 import { DataLoader } from "./DataLoader";
-import { getLogin } from "./store/loginSlice";
 import { DiveList } from "./DiveList";
+import type { RootState } from "./types";
 import "./App.css";
 
 function App() {
   const [count, setCount] = useState(0);
-  const login = useSelector(getLogin);
+  const user = useSelector((state: RootState) => state.login?.user);
 
   return (
     <div className="App">
@@ -19,7 +19,7 @@ function App() {
       <Localized id="welcome-to-subsurface" />
       <Login />
       <DataLoader />
-      {login ? <Localized id="hello-user" vars={{ user: login }} /> : null}
+      {user ? <Localized id="hello-user" vars={{ user }} /> : null}
       <DiveList />
     </div>
   );
