@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Localized } from "@fluent/react";
+import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
 import { type RootState } from "./store";
@@ -156,6 +157,9 @@ function DiveGraphs({ dive }: { dive: Dive }) {
 function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
   const [shown, toggleShow] = useState(false);
 
+  const dateTime = Date.parse(`${dive.date}T${dive.time}`);
+  const endTime = dateTime + dive.duration * 1000;
+
   return (
     <>
       <label className="dive-line">
@@ -164,6 +168,46 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
       </label>
+      <div>
+        <Localized
+          id="dive-date"
+          vars={{
+            date: new FluentDateTime(dateTime, {
+              month: "long",
+              year: "numeric",
+              day: "numeric",
+            }),
+          }}
+        />
+      </div>
+      <div>
+        <Localized
+          id="dive-time"
+          vars={{
+            startTime: new FluentDateTime(dateTime, {
+              hour: "numeric",
+              minute: "numeric",
+            }),
+            endTime: new FluentDateTime(endTime, {
+              hour: "numeric",
+              minute: "numeric",
+            }),
+            duration: dive.dive_duration,
+          }}
+        />
+      </div>
+      <div>
+        <Localized
+          id="dive-max-depth"
+          vars={{
+            depth: new FluentNumber(dive.maxdepth / 1000, {
+              style: "unit",
+              unit: "meter",
+              maximumFractionDigits: 1,
+            }),
+          }}
+        />
+      </div>
       {shown ? <DiveGraphs dive={dive} /> : null}
     </>
   );

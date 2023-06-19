@@ -4,6 +4,15 @@ welcome-to-subsurface = Welcome to { -brand-name }
 hello-user = Hello { $user }!
 hide-dive = Hide
 show-dive = Show
+
+# The $date, $time and $endTime variables are already formatted through the use of
+# FluentDateTime.
+dive-date = Date: { $date }
+dive-time = Duration: { $duration } ({ $startTime } to { $endTime })
+
+# The $depth contains the unit through the use of FluentNumber.
+dive-max-depth = Max depth: { $depth }
+
 login-summary = Subsurface login
 login-user = User:
 login-password = Password:
@@ -13,4 +22,4 @@ login-save-login = Save login
 login-autologin = Login automatically
 login-explanation =
   The login information is persisted locally on your computer
-  and is only sent to the Subsurface cloud server. 
+  and is only sent to the Subsurface cloud server.

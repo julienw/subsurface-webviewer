@@ -21,7 +21,6 @@ export function Login() {
   const [autologinFromForm, setAutologinFromForm] = useState(
     persistFromForm && localStorage.autologin === "true"
   );
-  console.log(autologinFromForm);
 
   useEffect(() => {
     if (autologinFromForm) {
