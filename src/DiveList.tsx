@@ -161,55 +161,57 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
   const endTime = dateTime + dive.duration * 1000;
 
   return (
-    <>
-      <label className="dive-line">
+    <div className="dive-line">
+      <label className="dive-summary" onClick={() => toggleShow(!shown)}>
         {trip.name}: ({dive.number}) {dive.location}
-        <button type="button" onClick={() => toggleShow(!shown)}>
+        <button type="button">
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
       </label>
-      <div>
-        <Localized
-          id="dive-date"
-          vars={{
-            date: new FluentDateTime(dateTime, {
-              month: "long",
-              year: "numeric",
-              day: "numeric",
-            }),
-          }}
-        />
-      </div>
-      <div>
-        <Localized
-          id="dive-time"
-          vars={{
-            startTime: new FluentDateTime(dateTime, {
-              hour: "numeric",
-              minute: "numeric",
-            }),
-            endTime: new FluentDateTime(endTime, {
-              hour: "numeric",
-              minute: "numeric",
-            }),
-            duration: dive.dive_duration,
-          }}
-        />
-      </div>
-      <div>
-        <Localized
-          id="dive-max-depth"
-          vars={{
-            depth: new FluentNumber(dive.maxdepth / 1000, {
-              style: "unit",
-              unit: "meter",
-              maximumFractionDigits: 1,
-            }),
-          }}
-        />
+      <div className="dive-details" onClick={() => toggleShow(!shown)}>
+        <div>
+          <Localized
+            id="dive-date"
+            vars={{
+              date: new FluentDateTime(dateTime, {
+                month: "long",
+                year: "numeric",
+                day: "numeric",
+              }),
+            }}
+          />
+        </div>
+        <div>
+          <Localized
+            id="dive-time"
+            vars={{
+              startTime: new FluentDateTime(dateTime, {
+                hour: "numeric",
+                minute: "numeric",
+              }),
+              endTime: new FluentDateTime(endTime, {
+                hour: "numeric",
+                minute: "numeric",
+              }),
+              duration: dive.dive_duration,
+            }}
+          />
+        </div>
+        <div>
+          <Localized
+            id="dive-max-depth"
+            vars={{
+              depth: new FluentNumber(dive.maxdepth / 1000, {
+                style: "unit",
+                unit: "meter",
+                maximumFractionDigits: 1,
+              }),
+            }}
+          />
+        </div>
       </div>
       {shown ? <DiveGraphs dive={dive} /> : null}
-    </>
+    </div>
   );
 }
 
