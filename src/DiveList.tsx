@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Localized, useLocalization } from "@fluent/react";
+import {
+  Localized,
+  useLocalization,
+  type ReactLocalization,
+} from "@fluent/react";
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
 import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import "./DiveList.css";
+
+function findMainLocale(l10n: ReactLocalization) {
+  const [mainBundle] = l10n.bundles;
+  const [mainLocale] = mainBundle.locales;
+  return mainLocale;
+}
 
 function DepthGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
@@ -27,6 +37,7 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
           xAxisKey: "time",
           yAxisKey: "depth",
         },
+        locale: findMainLocale(l10n),
         scales: {
           y: {
             type: "linear",
@@ -59,11 +70,34 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
 function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
   const speeds = [];
+  const colors = [];
   for (let i = 1; i < samples.length; i++) {
     const interval = samples[i][0] - samples[i - 1][0];
     const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
     const speed = -diff / interval;
     speeds.push({ speed, time: samples[i][0] });
+
+    let hue;
+    if (speed < 0) {
+      if (speed > -20) {
+        hue = 120;
+      } else if (speed < -30) {
+        hue = 0;
+      } else {
+        hue = speed * 12 + 360;
+      }
+    } else {
+      if (speed < 12) {
+        hue = 120;
+      } else if (speed > 17) {
+        hue = 0;
+      } else {
+        hue = speed * -24 + 408;
+      }
+    }
+
+    const color = `hsl(${hue}deg 50% 50%)`;
+    colors.push(color);
   }
 
   return (
@@ -72,6 +106,7 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
         datasets: [
           {
             data: speeds,
+            backgroundColor: colors,
             barPercentage: 1,
             categoryPercentage: 1,
           },
@@ -79,6 +114,7 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
       }}
       options={{
         parsing: { xAxisKey: "time", yAxisKey: "speed" },
+        locale: findMainLocale(l10n),
         scales: {
           x: {
             type: "linear",
@@ -135,6 +171,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
           xAxisKey: "time",
           yAxisKey: "temperature",
         },
+        locale: findMainLocale(l10n),
         scales: {
           y: {
             type: "linear",
@@ -189,6 +226,7 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
           xAxisKey: "time",
           yAxisKey: "pressure",
         },
+        locale: findMainLocale(l10n),
         scales: {
           y: {
             type: "linear",
