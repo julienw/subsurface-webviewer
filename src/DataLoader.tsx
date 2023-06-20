@@ -9,7 +9,7 @@ export function DataLoader() {
     if (login && login.user && login.password) {
       dispatch(fetchDataForUser(login));
     }
-  }, [login]);
+  }, [login, dispatch]);
 
   return null;
 }
