@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import { type ReactNode } from "react";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { negotiateLanguages } from "@fluent/langneg";

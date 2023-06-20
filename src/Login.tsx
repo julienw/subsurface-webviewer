@@ -42,7 +42,7 @@ export function Login() {
     }
   };
 
-  const onFormReset = (e: SyntheticEvent<HTMLFormElement>) => {
+  const onFormReset = (_e: SyntheticEvent<HTMLFormElement>) => {
     dispatch(setLogin(null));
     delete localStorage.login;
     setUserFromForm("");

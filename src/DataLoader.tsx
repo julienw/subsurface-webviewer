@@ -1,7 +1,5 @@
-import type { SyntheticEvent } from "react";
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./store/hooks";
-import { setLogin } from "./store/loginSlice";
 import { fetchDataForUser } from "./store/dataSlice";
 
 export function DataLoader() {

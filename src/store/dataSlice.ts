@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fakeData from "../mock-data/julien";
-import type { RootState } from ".";
 import type { Trip } from "../types";
 
 function getDataUrl({ user, password }: { user: string; password: string }) {
@@ -26,8 +25,7 @@ export const fetchDataForUser = createAsyncThunk(
       scriptElement.addEventListener(
         "load",
         () => {
-          // Typescript doesn't know about window.trips.
-          // @ts-ignore
+          // @ts-expect-error Typescript doesn't know about window.trips.
           resolve(window.trips as Trip[]);
           scriptElement.remove();
         },
@@ -53,16 +51,15 @@ export const dataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDataForUser.pending, (state, action) => {
+      .addCase(fetchDataForUser.pending, (state, _action) => {
         state.loading = "pending";
       })
-      .addCase(fetchDataForUser.rejected, (state, action) => {
+      .addCase(fetchDataForUser.rejected, (state, _action) => {
         state.loading = "failed";
         state.data = null;
       })
       .addCase(fetchDataForUser.fulfilled, (state, action) => {
-        // We'll deal with that later -- or not
-        // @ts-ignore
+        // @ts-expect-error We'll deal with that later -- or not
         state.data = action.payload;
         state.loading = "succeeded";
       });

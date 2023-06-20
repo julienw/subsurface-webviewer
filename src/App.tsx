@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Localized } from "@fluent/react";
 import { Login } from "./Login";
@@ -8,7 +7,6 @@ import type { RootState } from "./types";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
   const user = useSelector((state: RootState) => state.login?.user);
 
   return (
