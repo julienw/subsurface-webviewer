@@ -87,7 +87,10 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
         hue = speed * 12 + 360;
       }
     } else {
-      if (speed < 12) {
+      if (samples[i][1] < 6 && speed > 6) {
+        // > 6m, the speed should be slower
+        hue = 0;
+      } else if (speed < 12) {
         hue = 120;
       } else if (speed > 17) {
         hue = 0;
