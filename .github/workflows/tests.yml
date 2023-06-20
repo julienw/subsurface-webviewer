@@ -15,7 +15,6 @@ defaults:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,6 +28,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: "yarn"
       - run: yarn install --frozen-lockfile
       - run: yarn build --base=/$(basename "$GITHUB_REPOSITORY")

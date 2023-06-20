@@ -1,8 +1,8 @@
 .dive-line {
   border-left: 3px solid #ccc;
-  padding: .5em;
+  padding: 0.5em;
   margin: 1em 0;
-  border-radius: .5em;
+  border-radius: 0.5em;
 }
 
 .dive-summary {
@@ -13,10 +13,11 @@
   transition: background 300ms;
 }
 
-.dive-summary:hover, .dive-details:hover {
+.dive-summary:hover,
+.dive-details:hover {
   background: #eee;
 }
 
 .dive-details {
-  font-size: .8em;
+  font-size: 0.8em;
 }
