@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Localized } from "@fluent/react";
+import { Localized, useLocalization } from "@fluent/react";
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
@@ -9,6 +9,7 @@ import type { Trip, Dive } from "./types";
 import "./DiveList.css";
 
 function DepthGraph({ dive: { samples } }: { dive: Dive }) {
+  const { l10n } = useLocalization();
   return (
     <Line
       data={{
@@ -30,8 +31,25 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
           y: {
             type: "linear",
             reverse: true,
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-depth-label"),
+            },
           },
-          x: { type: "linear" },
+          x: {
+            type: "linear",
+            position: "top",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-time-label"),
+              align: "end",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
         },
       }}
     />
@@ -39,9 +57,10 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
 }
 
 function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
+  const { l10n } = useLocalization();
   const speeds = [];
   for (let i = 1; i < samples.length; i++) {
-    const interval = (samples[i][0] - samples[i - 1][0]) / 60;
+    const interval = samples[i][0] - samples[i - 1][0];
     const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
     const speed = -diff / interval;
     speeds.push({ speed, time: samples[i][0] });
@@ -61,8 +80,28 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
       options={{
         parsing: { xAxisKey: "time", yAxisKey: "speed" },
         scales: {
-          x: { type: "linear" },
-          y: { type: "linear" },
+          x: {
+            type: "linear",
+            offset: false,
+            grid: { offset: false },
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-time-label"),
+              align: "end",
+            },
+          },
+          y: {
+            type: "linear",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-speed-label"),
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
         },
       }}
     />
@@ -70,6 +109,7 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
 }
 
 function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
+  const { l10n } = useLocalization();
   const data = samples
     .filter(([_time, _depth, _pressure, temperaturemK]) => temperaturemK)
     .map(([time, _depth, _pressure, temperaturemK]) => ({
@@ -98,8 +138,24 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
         scales: {
           y: {
             type: "linear",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-temperature-label"),
+            },
           },
-          x: { type: "linear" },
+          x: {
+            type: "linear",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-time-label"),
+              align: "end",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
         },
       }}
     />
@@ -107,6 +163,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
 }
 
 function TankGraph({ dive: { samples } }: { dive: Dive }) {
+  const { l10n } = useLocalization();
   const data = samples
     .filter(([_time, _depth, pressure]) => pressure)
     .map(([time, _depth, pressure]) => ({
@@ -135,8 +192,25 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
         scales: {
           y: {
             type: "linear",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-tank-pressure-label"),
+            },
           },
-          x: { type: "linear" },
+          x: {
+            type: "linear",
+
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-time-label"),
+              align: "end",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
         },
       }}
     />
@@ -159,6 +233,10 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
 
   const dateTime = Date.parse(`${dive.date}T${dive.time}`);
   const endTime = dateTime + dive.duration * 1000;
+  dive = {
+    ...dive,
+    samples: dive.samples.map(([time, ...rest]) => [time / 60, ...rest]),
+  };
 
   return (
     <div className="dive-line">

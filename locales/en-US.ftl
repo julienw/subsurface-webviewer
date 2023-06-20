@@ -23,3 +23,10 @@ login-autologin = Login automatically
 login-explanation =
   The login information is persisted locally on your computer
   and is only sent to the Subsurface cloud server.
+
+graph-axis-time-label = time (min) →
+graph-axis-depth-label = ← depth (m)
+graph-axis-speed-label = vertical speed (m/min)
+graph-axis-temperature-label = water temperature (°C)
+graph-axis-tank-pressure-label = tank pressure (bar) 
+
