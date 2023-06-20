@@ -74,7 +74,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
     .filter(([_time, _depth, _pressure, temperaturemK]) => temperaturemK)
     .map(([time, _depth, _pressure, temperaturemK]) => ({
       time,
-      temperature: temperaturemK / 1000 - 173.15,
+      temperature: (temperaturemK - 273150) / 1000,
     }));
 
   if (!data.length) {
