@@ -11,7 +11,7 @@ import { negotiateLanguages } from "@fluent/langneg";
 import { LocalizationProvider, ReactLocalization } from "@fluent/react";
 
 // List all available locales.
-const AVAILABLE_LOCALES = ["en-US"];
+const AVAILABLE_LOCALES = ["en-US", "fr-FR"];
 
 // Negotiate user language.
 const languages = negotiateLanguages(navigator.languages, AVAILABLE_LOCALES, {

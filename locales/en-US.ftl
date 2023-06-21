@@ -5,8 +5,8 @@ hello-user = Hello { $user }!
 hide-dive = Hide
 show-dive = Show
 
-# The $date, $time and $endTime variables are already formatted through the use of
-# FluentDateTime.
+# The $date, $time, $startTime and $endTime variables are already formatted
+# through the use of FluentDateTime.
 dive-date = Date: { $date }
 dive-time = Duration: { $duration } ({ $startTime } to { $endTime })
 
@@ -28,5 +28,5 @@ graph-axis-time-label = time (min) →
 graph-axis-depth-label = ← depth (m)
 graph-axis-speed-label = vertical speed (m/min)
 graph-axis-temperature-label = water temperature (°C)
-graph-axis-tank-pressure-label = tank pressure (bar) 
+graph-axis-tank-pressure-label = tank pressure (bar)
 
