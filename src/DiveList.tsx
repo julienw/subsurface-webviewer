@@ -73,6 +73,11 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
   );
 }
 
+const COLORS = {
+  ok: "#348037",
+  warning: "#C89F38",
+  error: "#7D372D",
+};
 function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
   const speeds = [];
@@ -83,29 +88,28 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
     const speed = -diff / interval;
     speeds.push({ speed, time: samples[i][0] });
 
-    let hue;
+    let color;
     if (speed < 0) {
       if (speed > -20) {
-        hue = 120;
+        color = COLORS.ok;
       } else if (speed < -30) {
-        hue = 0;
+        color = COLORS.error;
       } else {
-        hue = speed * 12 + 360;
+        color = COLORS.warning;
       }
     } else {
       if (samples[i][1] < 6 && speed > 6) {
         // > 6m, the speed should be slower
-        hue = 0;
+        color = COLORS.error;
       } else if (speed < 12) {
-        hue = 120;
+        color = COLORS.ok;
       } else if (speed > 17) {
-        hue = 0;
+        color = COLORS.error;
       } else {
-        hue = speed * -24 + 408;
+        color = COLORS.warning;
       }
     }
 
-    const color = `hsl(${hue}deg 50% 50%)`;
     colors.push(color);
   }
 
