@@ -63,6 +63,10 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
             },
           },
         },
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
         plugins: {
           legend: {
             display: false,
@@ -147,6 +151,10 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
             },
           },
         },
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
         plugins: {
           legend: {
             display: false,
@@ -201,6 +209,10 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
               align: "end",
             },
           },
+        },
+        interaction: {
+          mode: "index",
+          intersect: false,
         },
         plugins: {
           legend: {
@@ -257,6 +269,10 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               align: "end",
             },
           },
+        },
+        interaction: {
+          mode: "index",
+          intersect: false,
         },
         plugins: {
           legend: {
