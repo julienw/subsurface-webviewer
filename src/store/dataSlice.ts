@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import fakeData from "../mock-data/julien";
+const fakeData = import.meta.glob("../mock-data/*", { import: "default" });
 import type { Trip } from "../types";
 
 function getDataUrl({ user, password }: { user: string; password: string }) {
@@ -10,12 +10,19 @@ function getDataUrl({ user, password }: { user: string; password: string }) {
 export const fetchDataForUser = createAsyncThunk(
   "data/fetchDataStatus",
   (login: { user: string; password: string }) => {
-    if (!login.user) {
-      throw new Error("No user has been provided");
+    if (window.location.search.includes("fake")) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const fakeDataName = searchParams.get("fake");
+      let fakeFile = `../mock-data/${fakeDataName}.ts`;
+      if (!(fakeFile in fakeData)) {
+        console.error(`Unknown fake data ${fakeDataName}`);
+        fakeFile = `../mock-data/julien.ts`;
+      }
+      return fakeData[fakeFile]();
     }
 
-    if (window.location.search.includes("fake")) {
-      return fakeData;
+    if (!login.user) {
+      throw new Error("No user has been provided");
     }
 
     const url = getDataUrl(login);
