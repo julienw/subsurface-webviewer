@@ -44,6 +44,7 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
           yAxisKey: "depth",
         },
         locale: findMainLocale(l10n),
+        elements: { point: { pointStyle: false } },
         scales: {
           y: {
             type: "linear",
@@ -193,6 +194,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
           yAxisKey: "temperature",
         },
         locale: findMainLocale(l10n),
+        elements: { point: { pointStyle: false } },
         scales: {
           y: {
             type: "linear",
@@ -252,6 +254,7 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
           yAxisKey: "pressure",
         },
         locale: findMainLocale(l10n),
+        elements: { point: { pointStyle: false } },
         scales: {
           y: {
             type: "linear",
