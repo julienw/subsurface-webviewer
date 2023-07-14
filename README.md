@@ -14,17 +14,17 @@ computer](https://julienw.github.io/subsurface-webviewer/?fake=julien) or
 
 ## Features
 
-* Shows your dive profiles
-* Computes ascent and descent speed and graph them separately, with colors. This is useful to know at
+- Shows your dive profiles
+- Computes ascent and descent speed and graph them separately, with colors. This is useful to know at
   the first glance if you went too fast.
-* Also graphs tank consumption as well as temperature if your computer provides
+- Also graphs tank consumption as well as temperature if your computer provides
   this data.
 
 ## Known limitations
 
-* Doesn't show events (ascent, gas change).
-* Doesn't compute the saturation or OTU values
-* Doesn't contain a dive planner
+- Doesn't show events (ascent, gas change).
+- Doesn't compute the saturation or OTU values
+- Doesn't contain a dive planner
 
 This is fairly simple for now, but I personally find it already easier to use
 than the official mobile version of subsurface. Tell me what you think!
@@ -56,4 +56,3 @@ The app also contains some fake data to help with the development. Just add
 This gets the divelog data by tapping into the subsurface cloud web interface.
 Then this uses [React](https://react.dev/) and [ChartJS](http://chartjs.org/) to
 display the data.
-
