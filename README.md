@@ -37,10 +37,10 @@ To get started clone the repo and get the web application started.
 2. Run `cd subsurface-webviewer`
 3. Run `yarn install`, this will install all of the dependencies.
 4. Run `yarn dev`, this will start up the development server.
-5. Point your browser to [http://localhost:5173](http://localhost:5173) (Note
+5. Point your browser to [http://localhost:5173](http://localhost:5173). Note
    that the port will be different if you run more than one development server
    on the same machine. In that case pay attention to the message displayed in
-   the console).
+   the console.
 
 [Typescript](https://www.typescriptlang.org/) is used for type checking.
 
