@@ -8,6 +8,10 @@ want to try it already, the current main branch is automatically deployed to
 https://julienw.github.io/subsurface-webviewer/. Your login data is only stored
 on your computer.
 
+You can try it already with some data taken from either [Julien's Suunto Vyper
+computer](https://julienw.github.io/subsurface-webviewer/?fake=julien) or
+[Yann's Eon computer](https://julienw.github.io/subsurface-webviewer/?fake=yann).
+
 ## Features
 
 * Shows your dive profiles
