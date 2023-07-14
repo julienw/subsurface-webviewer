@@ -22,7 +22,7 @@ const messagesPromise = languages.map(getMessages);
 
 // Load locales from files.
 async function getMessages(locale: string): Promise<[string, string]> {
-  const url = new URL(`../locales/${locale}.ftl`, import.meta.url);
+  const url = new URL(`../locales/${locale}/subsurface.ftl`, import.meta.url);
   const response = await fetch(url);
   const messages = await response.text();
   return [locale, messages];
