@@ -68,3 +68,18 @@ patch.
 Also to make my life easier, please describe your change properly in the pull
 request description: the WHY, the steps to test it manually, the manual tests
 you already did.
+
+### Localization
+
+The application is ready to be localized. However only english and french are
+available as of now. We'd love it if you can provide localization for your language,
+however there's no system to keep the localization strings synchronized at the moment.
+
+You can find the string files in the [locales/ directory](https://github.com/julienw/subsurface-webviewer/tree/main/locales),
+with a subdirectory for each locale. Inside this directory, the file
+subsurface.ftl contains the strings. The en-US version is always the authoritative
+version so you can start by copying it.
+
+There's also no locale switcher at the moment. The locale is automatically
+selected from the preference set inside your browser. We want to implement a
+locale selector in the future though.
