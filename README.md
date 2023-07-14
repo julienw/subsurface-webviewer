@@ -56,3 +56,15 @@ The app also contains some fake data to help with the development. Just add
 This gets the divelog data by tapping into the subsurface cloud web interface.
 Then this uses [React](https://react.dev/) and [ChartJS](http://chartjs.org/) to
 display the data.
+
+### Submitting patches
+
+First, thank you!
+
+Please now that a few tests will run automatically on your pull request, so make
+sure to run `yarn format:fix` and `yarn lint:fix` before submitting a
+patch.
+
+Also to make my life easier, please describe your change properly in the pull
+request description: the WHY, the steps to test it manually, the manual tests
+you already did.
