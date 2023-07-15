@@ -51,8 +51,12 @@ export function Login() {
   const onFormReset = (_e: SyntheticEvent<HTMLFormElement>) => {
     dispatch(setLogin(null));
     delete localStorage.login;
+    delete localStorage.password;
+    delete localStorage.autologin;
     setUserFromForm("");
+    setPasswordFromForm("");
     setPersistFromForm(false);
+    setAutologinFromForm(false);
   };
 
   const open =

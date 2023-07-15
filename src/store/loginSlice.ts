@@ -6,6 +6,10 @@ export const loginSlice = createSlice({
   initialState: null as null | LoginInfo,
   reducers: {
     setLogin: (state, action) => {
+      if (action.payload === null) {
+        return null;
+      }
+
       return {
         user: action.payload.user,
         password: action.payload.password,
