@@ -20,15 +20,25 @@ export function Login() {
     "login" in localStorage
   );
   const [autologinFromForm, setAutologinFromForm] = useState(
-    persistFromForm && localStorage.autologin === "true"
+    localStorage.autologin === "true"
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (autologinFromForm || window.location.search.includes("fake")) {
-      dispatch(fetchDataForUser(loginFromStore));
+    if (
+      ("login" in localStorage &&
+        "password" in localStorage &&
+        localStorage.autologin === "true") ||
+      window.location.search.includes("fake")
+    ) {
+      dispatch(
+        fetchDataForUser({
+          user: localStorage.login,
+          password: localStorage.password,
+        })
+      );
     }
-  }, []);
+  }, [dispatch]);
 
   const onFormSubmit = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();

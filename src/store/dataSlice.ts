@@ -25,6 +25,10 @@ export const fetchDataForUser = createAsyncThunk(
       throw new Error("No user has been provided");
     }
 
+    if (!login.password) {
+      throw new Error("No password has been provided");
+    }
+
     const url = getDataUrl(login);
     return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
