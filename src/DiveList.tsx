@@ -12,11 +12,30 @@ import {
   type ReactLocalization,
 } from "@fluent/react";
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
-import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
+import {
+  Chart,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Colors,
+} from "chart.js";
 import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import "./DiveList.css";
+
+// Register chart.js components that aren't automatically registedred by the
+// react wrapper.
+Chart.register(
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Colors
+);
 
 function findMainLocale(l10n: ReactLocalization) {
   const [mainBundle] = l10n.bundles;
