@@ -8,61 +8,53 @@ import type { SyntheticEvent } from "react";
 import { Localized } from "@fluent/react";
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./store/hooks";
-import { setLogin } from "./store/loginSlice";
+import { setUser, setPassword } from "./store/loginSlice";
+import { fetchDataForUser } from "./store/dataSlice";
 import "./Login.css";
 
 export function Login() {
   const loginFromStore = useAppSelector((state) => state.login);
   const loadingState = useAppSelector((state) => state.data.loading);
-  const [openFromForm, setOpenFromForm] = useState(null as null | boolean);
-  const [userFromForm, setUserFromForm] = useState(
-    loginFromStore?.user ?? localStorage.login ?? ""
-  );
-  const [passwordFromForm, setPasswordFromForm] = useState(
-    loginFromStore?.password ?? localStorage.password ?? ""
-  );
+  const [openFromForm, setOpenFromForm] = useState(!loginFromStore.user);
   const [persistFromForm, setPersistFromForm] = useState(
     "login" in localStorage
   );
   const [autologinFromForm, setAutologinFromForm] = useState(
     persistFromForm && localStorage.autologin === "true"
   );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (autologinFromForm) {
-      dispatch(setLogin({ user: userFromForm, password: passwordFromForm }));
+    if (autologinFromForm || window.location.search.includes("fake")) {
+      dispatch(fetchDataForUser(loginFromStore));
     }
   }, []);
 
-  const dispatch = useAppDispatch();
   const onFormSubmit = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
-    dispatch(setLogin({ user: userFromForm, password: passwordFromForm }));
+    dispatch(fetchDataForUser(loginFromStore));
     setOpenFromForm(false);
 
     // Possibly persist in localStorage
     if (persistFromForm) {
-      localStorage.login = userFromForm;
-      localStorage.password = passwordFromForm;
+      localStorage.login = loginFromStore.user;
+      localStorage.password = loginFromStore.password;
       localStorage.autologin = autologinFromForm;
     }
   };
 
-  const onFormReset = (_e: SyntheticEvent<HTMLFormElement>) => {
-    dispatch(setLogin(null));
+  const onFormReset = (_e: SyntheticEvent<HTMLButtonElement, MouseEvent>) => {
     delete localStorage.login;
     delete localStorage.password;
     delete localStorage.autologin;
-    setUserFromForm("");
-    setPasswordFromForm("");
+    dispatch(setUser(""));
+    dispatch(setPassword(""));
     setPersistFromForm(false);
     setAutologinFromForm(false);
   };
 
   const open =
-    loadingState === "failed" ||
-    loadingState == "idle" ||
-    (openFromForm ?? !userFromForm);
+    loadingState === "failed" || loadingState == "idle" || openFromForm;
 
   return (
     <details
@@ -78,17 +70,13 @@ export function Login() {
       <div>
         <Localized id="login-explanation" />
       </div>
-      <form
-        className="login-form"
-        onSubmit={onFormSubmit}
-        onReset={onFormReset}
-      >
+      <form className="login-form" onSubmit={onFormSubmit}>
         <label>
           <Localized id="login-user" />{" "}
           <input
             name="user-input"
-            onChange={(e) => setUserFromForm(e.currentTarget.value)}
-            value={userFromForm}
+            onChange={(e) => dispatch(setUser(e.currentTarget.value))}
+            value={loginFromStore.user}
           />
         </label>
         <label>
@@ -96,8 +84,8 @@ export function Login() {
           <input
             name="password-input"
             type="password"
-            onChange={(e) => setPasswordFromForm(e.currentTarget.value)}
-            value={passwordFromForm}
+            onChange={(e) => dispatch(setPassword(e.currentTarget.value))}
+            value={loginFromStore.password}
           />
         </label>
         <label>
@@ -122,7 +110,7 @@ export function Login() {
           <button type="submit">
             <Localized id="login-submit" />
           </button>
-          <button type="reset">
+          <button type="button" onClick={onFormReset}>
             <Localized id="login-reset" />
           </button>
         </div>
