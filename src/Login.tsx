@@ -53,14 +53,26 @@ export function Login() {
     }
   };
 
-  const onFormReset = (_e: SyntheticEvent<HTMLButtonElement, MouseEvent>) => {
+  const deleteDataFromLocalStorage = () => {
     delete localStorage.login;
     delete localStorage.password;
     delete localStorage.autologin;
+  };
+
+  const onFormReset = (_e: SyntheticEvent<HTMLButtonElement, MouseEvent>) => {
+    deleteDataFromLocalStorage();
     dispatch(setUser(""));
     dispatch(setPassword(""));
     setPersistFromForm(false);
     setAutologinFromForm(false);
+  };
+
+  const onPersistCheckboxChange = (e: SyntheticEvent<HTMLInputElement>) => {
+    const checked = e.currentTarget.checked;
+    if (!checked) {
+      deleteDataFromLocalStorage();
+    }
+    setPersistFromForm(checked);
   };
 
   const open =
@@ -102,7 +114,7 @@ export function Login() {
           <input
             type="checkbox"
             name="persist-checkbox"
-            onChange={(e) => setPersistFromForm(e.currentTarget.checked)}
+            onChange={onPersistCheckboxChange}
             checked={persistFromForm}
           />{" "}
           <Localized id="login-save-login" />
