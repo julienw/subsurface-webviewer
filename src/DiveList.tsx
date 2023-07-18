@@ -14,6 +14,8 @@ import {
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
+import memoizeOne from "memoize-one";
+
 import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
 import type { ScriptableContext } from "chart.js";
@@ -25,6 +27,29 @@ function findMainLocale(l10n: ReactLocalization) {
   return mainLocale;
 }
 
+const computeSpeedAndDepth = memoizeOne((samples) => {
+  const data = [
+    {
+      speed: 0,
+      time: samples[0][0],
+      depth: samples[0][1] / 1000,
+    },
+  ];
+
+  for (let i = 1; i < samples.length; i++) {
+    const interval = samples[i][0] - samples[i - 1][0];
+    const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
+    const speed = -diff / interval;
+    data.push({
+      speed,
+      time: samples[i][0],
+      depth: samples[i][1] / 1000,
+    });
+  }
+
+  return data;
+});
+
 function DepthGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
   return (
@@ -32,10 +57,7 @@ function DepthGraph({ dive: { samples } }: { dive: Dive }) {
       data={{
         datasets: [
           {
-            data: samples.map(([time, depth]) => ({
-              time,
-              depth: depth / 1000,
-            })),
+            data: computeSpeedAndDepth(samples),
           },
         ],
       }}
@@ -119,20 +141,13 @@ function getSpeedColor(context: ScriptableContext<"bar">) {
 
 function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
-  const speeds = [];
-  for (let i = 1; i < samples.length; i++) {
-    const interval = samples[i][0] - samples[i - 1][0];
-    const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
-    const speed = -diff / interval;
-    speeds.push({ speed, time: samples[i][0], depth: samples[i][1] / 1000 });
-  }
 
   return (
     <Bar
       data={{
         datasets: [
           {
-            data: speeds,
+            data: computeSpeedAndDepth(samples),
             backgroundColor: getSpeedColor,
             barPercentage: 1,
             categoryPercentage: 1,
