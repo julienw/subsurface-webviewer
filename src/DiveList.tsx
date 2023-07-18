@@ -16,6 +16,7 @@ import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
 import { type RootState } from "./store";
 import type { Trip, Dive } from "./types";
+import type { ScriptableContext } from "chart.js";
 import "./DiveList.css";
 
 function findMainLocale(l10n: ReactLocalization) {
@@ -83,39 +84,47 @@ const COLORS = {
   warning: "#C89F38",
   error: "#7D372D",
 };
+
+function getSpeedColor(context: ScriptableContext<"bar">) {
+  const { speed, depth } = context.raw as {
+    speed: number;
+    time: number;
+    depth: number;
+  };
+
+  let color;
+  if (speed < 0) {
+    if (speed > -20) {
+      color = COLORS.ok;
+    } else if (speed < -30) {
+      color = COLORS.error;
+    } else {
+      color = COLORS.warning;
+    }
+  } else {
+    if (depth < 6 && speed > 6) {
+      // > 6m, the speed should be slower
+      color = COLORS.error;
+    } else if (speed < 12) {
+      color = COLORS.ok;
+    } else if (speed > 17) {
+      color = COLORS.error;
+    } else {
+      color = COLORS.warning;
+    }
+  }
+
+  return color;
+}
+
 function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
   const speeds = [];
-  const colors = [];
   for (let i = 1; i < samples.length; i++) {
     const interval = samples[i][0] - samples[i - 1][0];
     const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
     const speed = -diff / interval;
-    speeds.push({ speed, time: samples[i][0] });
-
-    let color;
-    if (speed < 0) {
-      if (speed > -20) {
-        color = COLORS.ok;
-      } else if (speed < -30) {
-        color = COLORS.error;
-      } else {
-        color = COLORS.warning;
-      }
-    } else {
-      if (samples[i][1] < 6 && speed > 6) {
-        // > 6m, the speed should be slower
-        color = COLORS.error;
-      } else if (speed < 12) {
-        color = COLORS.ok;
-      } else if (speed > 17) {
-        color = COLORS.error;
-      } else {
-        color = COLORS.warning;
-      }
-    }
-
-    colors.push(color);
+    speeds.push({ speed, time: samples[i][0], depth: samples[i][1] / 1000 });
   }
 
   return (
@@ -124,7 +133,7 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
         datasets: [
           {
             data: speeds,
-            backgroundColor: colors,
+            backgroundColor: getSpeedColor,
             barPercentage: 1,
             categoryPercentage: 1,
           },
