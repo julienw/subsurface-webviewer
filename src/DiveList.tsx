@@ -286,6 +286,7 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               display: true,
               text: l10n.getString("graph-axis-tank-pressure-label"),
             },
+            suggestedMin: 0,
           },
           x: {
             type: "linear",
