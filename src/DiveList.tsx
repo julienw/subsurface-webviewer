@@ -14,10 +14,9 @@ import {
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
-import memoizeOne from "memoize-one";
 
 import { type RootState } from "./store";
-import type { Trip, Dive } from "./types";
+import type { Trip, Dive, Sample } from "./types";
 import type { ScriptableContext } from "chart.js";
 import "./DiveList.css";
 
@@ -27,7 +26,8 @@ function findMainLocale(l10n: ReactLocalization) {
   return mainLocale;
 }
 
-const computeSpeedAndDepth = memoizeOne((samples) => {
+type SpeedAndDepth = { speed: number; time: number; depth: number };
+function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
   const data = [
     {
       speed: 0,
@@ -48,16 +48,16 @@ const computeSpeedAndDepth = memoizeOne((samples) => {
   }
 
   return data;
-});
+}
 
-function DepthGraph({ dive: { samples } }: { dive: Dive }) {
+function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
   return (
     <Line
       data={{
         datasets: [
           {
-            data: computeSpeedAndDepth(samples),
+            data: speedAndDepth,
           },
         ],
       }}
@@ -139,7 +139,7 @@ function getSpeedColor(context: ScriptableContext<"bar">) {
   return color;
 }
 
-function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
+function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
 
   return (
@@ -147,7 +147,7 @@ function SpeedGraph({ dive: { samples } }: { dive: Dive }) {
       data={{
         datasets: [
           {
-            data: computeSpeedAndDepth(samples),
+            data: speedAndDepth,
             backgroundColor: getSpeedColor,
             barPercentage: 1,
             categoryPercentage: 1,
@@ -313,10 +313,11 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
 }
 
 function DiveGraphs({ dive }: { dive: Dive }) {
+  const speedAndDepth = computeSpeedAndDepth(dive.samples);
   return (
     <div>
-      <DepthGraph dive={dive} />
-      <SpeedGraph dive={dive} />
+      <DepthGraph speedAndDepth={speedAndDepth} />
+      <SpeedGraph speedAndDepth={speedAndDepth} />
       <TemperatureGraph dive={dive} />
       <TankGraph dive={dive} />
     </div>
