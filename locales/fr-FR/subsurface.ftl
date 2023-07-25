@@ -32,4 +32,6 @@ graph-axis-tank-pressure-label = pression du bloc (bar)
 
 # This is used as the title of all tooltips, indicating the duration of the dive
 # at this point.
-  graph-tooltip-title = @: { $minutes }:{ $seconds }
+graph-tooltip-title = @: { $minutes }:{ $seconds }
+graph-tooltip-depth-label = Profondeur: { $depth }
+graph-tooltip-speed-label = Vitesse verticale: { $speed }
