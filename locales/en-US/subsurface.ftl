@@ -30,3 +30,8 @@ graph-axis-speed-label = vertical speed (m/min)
 graph-axis-temperature-label = water temperature (°C)
 graph-axis-tank-pressure-label = tank pressure (bar)
 
+# This is used as the title of all tooltips, indicating the duration of the dive
+# at this point.
+graph-tooltip-title = @: { $minutes }:{ $seconds }
+graph-tooltip-depth-label = Depth: { $depth }
+graph-tooltip-speed-label = Vertical speed: { $speed }

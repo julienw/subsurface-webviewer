@@ -17,7 +17,7 @@ import { Line, Bar } from "react-chartjs-2";
 
 import { type RootState } from "./store";
 import type { Trip, Dive, Sample } from "./types";
-import type { ScriptableContext } from "chart.js";
+import type { ScriptableContext, TooltipItem } from "chart.js";
 import "./DiveList.css";
 
 function findMainLocale(l10n: ReactLocalization) {
@@ -50,8 +50,43 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
   return data;
 }
 
+const getTooltipTitleCallback =
+  (l10n: ReactLocalization) => (items: TooltipItem<"bar" | "line">[]) => {
+    const time = items[0].parsed.x;
+    const minutes = Math.floor(time);
+    const seconds = Math.floor((time - minutes) * 60);
+    return l10n.getString("graph-tooltip-title", {
+      minutes: new FluentNumber(minutes, { minimumIntegerDigits: 2 }),
+      seconds: new FluentNumber(seconds, { minimumIntegerDigits: 2 }),
+    });
+  };
+
+const getDepthAndSpeedTooltipLabelCallback =
+  (l10n: ReactLocalization) => (item: TooltipItem<"bar" | "line">) => {
+    const { speed, depth } = item.raw as SpeedAndDepth;
+
+    return [
+      l10n.getString("graph-tooltip-depth-label", {
+        depth: new FluentNumber(depth, {
+          style: "unit",
+          unit: "meter",
+          maximumFractionDigits: 1,
+        }),
+      }),
+      l10n.getString("graph-tooltip-speed-label", {
+        speed: new FluentNumber(speed, {
+          style: "unit",
+          unit: "meter-per-minute",
+          maximumFractionDigits: 1,
+        }),
+      }),
+    ];
+  };
+
 function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
+  console.log(l10n);
+  const locale = findMainLocale(l10n);
   return (
     <Line
       data={{
@@ -66,7 +101,7 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
           xAxisKey: "time",
           yAxisKey: "depth",
         },
-        locale: findMainLocale(l10n),
+        locale,
         elements: { point: { pointStyle: false } },
         scales: {
           y: {
@@ -94,6 +129,13 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              title: getTooltipTitleCallback(l10n),
+              label: getDepthAndSpeedTooltipLabelCallback(l10n),
+            },
           },
         },
       }}
@@ -183,6 +225,13 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              title: getTooltipTitleCallback(l10n),
+              label: getDepthAndSpeedTooltipLabelCallback(l10n),
+            },
           },
         },
       }}
