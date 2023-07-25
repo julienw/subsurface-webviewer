@@ -293,6 +293,23 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
           legend: {
             display: false,
           },
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              title: getTooltipTitleCallback(l10n),
+              label: (ctx) => {
+                const temperature = ctx.parsed.y;
+
+                return l10n.getString("graph-tooltip-temperature-label", {
+                  temperature: new FluentNumber(temperature, {
+                    style: "unit",
+                    unit: "celsius",
+                    maximumFractionDigits: 1,
+                  }),
+                });
+              },
+            },
+          },
         },
       }}
     />
@@ -354,6 +371,21 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              title: getTooltipTitleCallback(l10n),
+              label: (ctx) => {
+                const pressure = ctx.parsed.y;
+
+                return l10n.getString("graph-tooltip-tank-pressure-label", {
+                  pressure: new FluentNumber(pressure, {
+                    maximumFractionDigits: 1,
+                  }),
+                });
+              },
+            },
           },
         },
       }}

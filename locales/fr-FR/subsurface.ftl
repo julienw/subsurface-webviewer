@@ -35,3 +35,5 @@ graph-axis-tank-pressure-label = pression du bloc (bar)
 graph-tooltip-title = @: { $minutes }:{ $seconds }
 graph-tooltip-depth-label = Profondeur: { $depth }
 graph-tooltip-speed-label = Vitesse verticale: { $speed }
+graph-tooltip-temperature-label = Température de l'eau: { $temperature }
+graph-tooltip-tank-pressure-label = Pression du bloc: { $pressure }{"\u202f"}bar

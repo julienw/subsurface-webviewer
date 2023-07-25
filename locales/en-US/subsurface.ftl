@@ -35,3 +35,5 @@ graph-axis-tank-pressure-label = tank pressure (bar)
 graph-tooltip-title = @: { $minutes }:{ $seconds }
 graph-tooltip-depth-label = Depth: { $depth }
 graph-tooltip-speed-label = Vertical speed: { $speed }
+graph-tooltip-temperature-label = Water temperature: { $temperature }
+graph-tooltip-tank-pressure-label = Tank pressure: { $pressure }{"\u202f"}bar
