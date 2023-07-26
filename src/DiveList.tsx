@@ -85,7 +85,6 @@ const getDepthAndSpeedTooltipLabelCallback =
 
 function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
-  console.log(l10n);
   const locale = findMainLocale(l10n);
   return (
     <Line
