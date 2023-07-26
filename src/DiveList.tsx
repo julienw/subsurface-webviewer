@@ -5,7 +5,6 @@
  */
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import {
   Localized,
   useLocalization,
@@ -14,8 +13,8 @@ import {
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
+import { useAppSelector } from "./store/hooks";
 
-import { type RootState } from "./store";
 import type { Trip, Dive, Sample } from "./types";
 import type { ScriptableContext, TooltipItem } from "chart.js";
 import "./DiveList.css";
@@ -483,7 +482,7 @@ function TripInfo({ trip }: { trip: Trip }) {
 }
 
 export function DiveList() {
-  const dataInformation = useSelector((state: RootState) => state.data);
+  const dataInformation = useAppSelector((state) => state.data);
 
   return (
     <>
