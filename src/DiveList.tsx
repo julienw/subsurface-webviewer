@@ -416,12 +416,12 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
 
   return (
     <div className="dive-line">
-      <label className="dive-summary" onClick={() => toggleShow(!shown)}>
-        {trip.name}: ({dive.number}) {dive.location}
+      <div className="dive-summary" onClick={() => toggleShow(!shown)}>
         <button type="button">
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
-      </label>
+        {trip.name}: ({dive.number}) {dive.location}
+      </div>
       <div className="dive-details" onClick={() => toggleShow(!shown)}>
         <div>
           <Localized

@@ -15,8 +15,8 @@
   display: flex;
   user-select: none;
   align-items: center;
-  justify-content: space-between;
   transition: background 300ms;
+  gap: 2rem;
 }
 
 .dive-summary:hover,
