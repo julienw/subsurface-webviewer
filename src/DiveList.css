@@ -17,6 +17,8 @@
   align-items: center;
   transition: background 300ms;
   gap: 2rem;
+  position: sticky;
+  top: 0;
 }
 
 .dive-summary:hover,
