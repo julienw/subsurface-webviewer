@@ -13,6 +13,7 @@ import {
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
 import { Line, Bar } from "react-chartjs-2";
+import classnames from "classnames";
 import { useAppSelector } from "./store/hooks";
 
 import type { Trip, Dive, Sample } from "./types";
@@ -415,7 +416,12 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
 
   return (
     <div className="dive-line">
-      <div className="dive-summary" onClick={() => toggleShow(!shown)}>
+      <div
+        className={classnames("dive-summary", {
+          "dive-summary--isShown": shown,
+        })}
+        onClick={() => toggleShow(!shown)}
+      >
         <button type="button">
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>

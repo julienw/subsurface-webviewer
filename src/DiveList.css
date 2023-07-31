@@ -17,6 +17,9 @@
   align-items: center;
   transition: background 300ms;
   gap: 2rem;
+}
+
+.dive-summary--isShown {
   position: sticky;
   top: 0;
 }
