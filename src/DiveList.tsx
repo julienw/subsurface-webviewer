@@ -384,9 +384,7 @@ export function DiveList() {
       {dataInformation.data
         ?.slice()
         .reverse()
-        .map((trip, index) => (
-          <TripInfo trip={trip} key={index} />
-        ))}
+        .map((trip, index) => <TripInfo trip={trip} key={index} />)}
     </>
   );
 }

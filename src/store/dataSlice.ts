@@ -40,12 +40,12 @@ export const fetchDataForUser = createAsyncThunk(
           resolve(window.trips as Trip[]);
           scriptElement.remove();
         },
-        { once: true }
+        { once: true },
       );
       scriptElement.addEventListener("error", (e) => reject(e.error));
       document.head.append(scriptElement);
     });
-  }
+  },
 );
 
 interface DataState {

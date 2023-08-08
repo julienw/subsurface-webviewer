@@ -43,7 +43,7 @@ interface AppLocalizationProviderProps {
 
 export function AppLocalizationProvider(props: AppLocalizationProviderProps) {
   const [messages, setMessages] = useState<null | Array<[string, string]>>(
-    null
+    null,
   );
 
   useEffect(() => {
