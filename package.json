@@ -19,26 +19,26 @@
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.1",
     "@reduxjs/toolkit": "^1.9.5",
-    "chart.js": "^4.3.0",
+    "chart.js": "^4.3.2",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.1.1"
+    "react-redux": "^8.1.2"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@typescript-eslint/eslint-plugin": "^5.60.0",
-    "@typescript-eslint/parser": "^5.60.0",
-    "@vitejs/plugin-react": "^4.0.1",
-    "eslint": "^8.43.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-react": "^7.32.2",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
+    "@vitejs/plugin-react": "^4.0.4",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-react": "^7.33.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "npm-run-all2": "^6.0.6",
     "prettier": "^3.0.0",
     "typescript": "^5.1.3",
-    "vite": "^4.3.9"
+    "vite": "^4.4.4"
   }
 }
