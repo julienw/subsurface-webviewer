@@ -19,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <App />
       </AppLocalizationProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

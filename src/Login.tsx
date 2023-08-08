@@ -17,10 +17,10 @@ export function Login() {
   const loadingState = useAppSelector((state) => state.data.loading);
   const [openFromForm, setOpenFromForm] = useState(!loginFromStore.user);
   const [persistFromForm, setPersistFromForm] = useState(
-    "login" in localStorage
+    "login" in localStorage,
   );
   const [autologinFromForm, setAutologinFromForm] = useState(
-    localStorage.autologin === "true"
+    localStorage.autologin === "true",
   );
   const dispatch = useAppDispatch();
 
@@ -35,7 +35,7 @@ export function Login() {
         fetchDataForUser({
           user: localStorage.login,
           password: localStorage.password,
-        })
+        }),
       );
     }
   }, [dispatch]);
