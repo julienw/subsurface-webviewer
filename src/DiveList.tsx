@@ -110,6 +110,10 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
               display: true,
               text: l10n.getString("graph-axis-depth-label"),
             },
+            afterFit(scale) {
+              // align all graphs
+              scale.width = 70;
+            },
           },
           x: {
             type: "linear",
@@ -211,9 +215,14 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
           },
           y: {
             type: "linear",
+            border: { color: "red" },
             title: {
               display: true,
               text: l10n.getString("graph-axis-speed-label"),
+            },
+            afterFit(scale) {
+              // align all graphs
+              scale.width = 70;
             },
           },
         },
@@ -273,6 +282,10 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
             title: {
               display: true,
               text: l10n.getString("graph-axis-temperature-label"),
+            },
+            afterFit(scale) {
+              // align all graphs
+              scale.width = 70;
             },
           },
           x: {
@@ -352,6 +365,10 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               text: l10n.getString("graph-axis-tank-pressure-label"),
             },
             suggestedMin: 0,
+            afterFit(scale) {
+              // align all graphs
+              scale.width = 70;
+            },
           },
           x: {
             type: "linear",
