@@ -8,3 +8,9 @@
   padding: 2rem;
   width: 100%;
 }
+
+@media screen and (max-width: 40rem) {
+  #root {
+    padding-inline: 0.5rem;
+  }
+}
