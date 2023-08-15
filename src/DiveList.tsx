@@ -112,7 +112,7 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
             },
             afterFit(scale) {
               // align all graphs
-              scale.width = 70;
+              scale.width = 60;
             },
           },
           x: {
@@ -222,7 +222,7 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
             },
             afterFit(scale) {
               // align all graphs
-              scale.width = 70;
+              scale.width = 60;
             },
           },
         },
@@ -285,7 +285,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
             },
             afterFit(scale) {
               // align all graphs
-              scale.width = 70;
+              scale.width = 60;
             },
           },
           x: {
@@ -367,7 +367,7 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
             suggestedMin: 0,
             afterFit(scale) {
               // align all graphs
-              scale.width = 70;
+              scale.width = 60;
             },
           },
           x: {
