@@ -372,10 +372,10 @@
   resolved "https://registry.yarnpkg.com/@fluent/langneg/-/langneg-0.7.0.tgz#51c58d0b422595640195d8234c0f15687cfcb261"
   integrity sha512-StAM0vgsD1QK+nFikaKs9Rxe3JGNipiXrpmemNGwM4gWERBXPe9gjzsBoKjgBgq1Vyiy+xy/C652QIWY+MPyYw==
 
-"@fluent/react@^0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@fluent/react/-/react-0.15.1.tgz#62ddacbfabfe1312ced649b74789948d3ca4ca7d"
-  integrity sha512-7RdjqTm5OcO7ZtCxXBfhnf+iSlj/PMjPomsHmq+F69H2UNu4hW/BzFHGwMNMMe6fQ1Fu64qlt1C2tI0sP2EPVA==
+"@fluent/react@^0.15.2":
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@fluent/react/-/react-0.15.2.tgz#7baff50e0842184ca46d6c9423a14ea03bf590ff"
+  integrity sha512-M2klqXTUJTD8o2VDm6vEXApE/pSc16YtB7DSZ/Q8cPYF63FgDkvquVLHjzzG1PvrK9JlKJKPzl3wJ7hTAqSK4w==
   dependencies:
     "@fluent/sequence" "^0.8.0"
     cached-iterable "^0.3.0"
@@ -1024,10 +1024,10 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
-eslint-config-prettier@^8.10.0:
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.10.0.tgz#3a06a662130807e2502fc3ff8b4143d8a0658e11"
-  integrity sha512-SM8AMJdeQqRYT9O9zguiruQZaN7+z+E4eAP9oiLNGKMtomwaB1E9dcgUD6ZAn/eQAb52USbvezbiljfZUhbJcg==
+eslint-config-prettier@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-9.0.0.tgz#eb25485946dd0c66cd216a46232dc05451518d1f"
+  integrity sha512-IcJsTkJae2S35pRsRAwoCE+925rJJStOdkKnLVgtE+tEpqU0EVVM7OqrwxqgptKdX29NUwC82I5pXsGFIgSevw==
 
 eslint-plugin-react-hooks@^4.6.0:
   version "4.6.0"
@@ -1921,10 +1921,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.0.tgz#e7b19f691245a21d618c68bc54dc06122f6105ae"
-  integrity sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==
+prettier@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.1.tgz#65271fc9320ce4913c57747a70ce635b30beaa40"
+  integrity sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==
 
 prop-types@^15.8.1:
   version "15.8.1"
