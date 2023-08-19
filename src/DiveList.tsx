@@ -215,7 +215,6 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
           },
           y: {
             type: "linear",
-            border: { color: "red" },
             title: {
               display: true,
               text: l10n.getString("graph-axis-speed-label"),
