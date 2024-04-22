@@ -18,16 +18,16 @@
     "@fluent/bundle": "^0.18.0",
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
-    "@reduxjs/toolkit": "^2.2.2",
+    "@reduxjs/toolkit": "^2.2.3",
     "chart.js": "^4.4.2",
     "classnames": "^2.5.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.65",
+    "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
@@ -38,7 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3",
-    "vite": "^5.1.7"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.9"
   }
 }
