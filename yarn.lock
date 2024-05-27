@@ -946,10 +946,10 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chart.js@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.4.2.tgz#95962fa6430828ed325a480cc2d5f2b4e385ac31"
-  integrity sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==
+chart.js@^4.4.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.4.3.tgz#3b2e11e7010fefa99b07d0349236f5098e5226ad"
+  integrity sha512-qK1gkGSRYcJzqrrzdR6a+I0vQ4/R+SoODXyAjscQ/4mzuNzySaMCd+hyVxitSY1+L2fjPD1Gbn+ibNqRmwQeLw==
   dependencies:
     "@kurkle/color" "^0.3.0"
 
@@ -1997,10 +1997,10 @@ npm-normalize-package-bin@^3.0.0:
   resolved "https://registry.yarnpkg.com/npm-normalize-package-bin/-/npm-normalize-package-bin-3.0.1.tgz#25447e32a9a7de1f51362c61a559233b89947832"
   integrity sha512-dMxCf+zZ+3zeQZXKxmyuCKlIDPGuv8EF940xbkC4kQVDTtqoh6rJFO+JTKSA6/Rwi0getWmtuy4Itup0AMcaDQ==
 
-npm-run-all2@^6.1.2:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/npm-run-all2/-/npm-run-all2-6.1.2.tgz#637b2b804f32dd8cee9e5edf7d47a9fc4ca8bf9d"
-  integrity sha512-WwwnS8Ft+RpXve6T2EIEVpFLSqN+ORHRvgNk3H9N62SZXjmzKoRhMFg3I17TK3oMaAEr+XFbRirWS2Fn3BCPSg==
+npm-run-all2@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/npm-run-all2/-/npm-run-all2-6.2.0.tgz#ac0a893a593e1ab3ef85c5ac3526321d2e3137bd"
+  integrity sha512-wA7yVIkthe6qJBfiJ2g6aweaaRlw72itsFGF6HuwCHKwtwAx/4BY1vVpk6bw6lS8RLMsexoasOkd0aYOmsFG7Q==
   dependencies:
     ansi-styles "^6.2.1"
     cross-spawn "^7.0.3"
