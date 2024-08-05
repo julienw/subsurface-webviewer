@@ -18,7 +18,7 @@
     "@fluent/bundle": "^0.18.0",
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
-    "@reduxjs/toolkit": "^2.2.6",
+    "@reduxjs/toolkit": "^2.2.7",
     "chart.js": "^4.4.3",
     "classnames": "^2.5.1",
     "react": "^18.3.1",
@@ -38,7 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.3"
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5"
   }
 }
