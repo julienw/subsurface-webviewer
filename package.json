@@ -19,7 +19,7 @@
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
     "@reduxjs/toolkit": "^2.3.0",
-    "chart.js": "^4.4.5",
+    "chart.js": "^4.4.6",
     "classnames": "^2.5.1",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
