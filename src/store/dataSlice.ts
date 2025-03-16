@@ -29,7 +29,7 @@ export const fetchDataForUser = createAsyncThunk(
       throw new Error("No password has been provided");
     }
 
-    const url = getDataUrl(login);
+    const url = getDataUrl(login) + "?_uncache=" + Date.now();
     return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
       scriptElement.src = url;
