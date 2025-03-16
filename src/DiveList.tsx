@@ -39,7 +39,7 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
   for (let i = 1; i < samples.length; i++) {
     const interval = samples[i][0] - samples[i - 1][0];
     const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
-    const speed = -diff / interval;
+    const speed = -diff / interval; // minus because I want to display negative speed when going down.
     data.push({
       speed,
       time: samples[i][0],
@@ -327,18 +327,57 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
   );
 }
 
+type PressureAndConsumption = {
+  pressure: number;
+  time: number;
+  consumption: number | null;
+};
+function computePressureAndConsumption(
+  samples: Sample[],
+): PressureAndConsumption[] {
+  const data: PressureAndConsumption[] = [
+    {
+      consumption: null,
+      time: samples[0][0],
+      pressure: samples[0][2] / 1000,
+    },
+  ];
+
+  let previousTime = samples[0][0];
+  let previousPressure = samples[0][2] / 1000;
+
+  for (let i = 1; i < samples.length; i++) {
+    const pressure = samples[i][2] / 1000;
+    if (pressure >= previousPressure) {
+      continue;
+    }
+    const time = samples[i][0];
+    const interval = time - previousTime;
+    const diff = previousPressure - pressure;
+    const consumption = diff / interval;
+    data.push({
+      consumption,
+      time,
+      pressure,
+    });
+    previousTime = time;
+    previousPressure = pressure;
+  }
+
+  return data;
+}
+
 function TankGraph({ dive: { samples } }: { dive: Dive }) {
   const { l10n } = useLocalization();
-  const data = samples
-    .filter(([_time, _depth, pressure]) => pressure)
-    .map(([time, _depth, pressure]) => ({
-      time,
-      pressure: pressure / 1000,
-    }));
+  const filteredSamples = samples.filter(
+    ([_time, _depth, pressure]) => pressure,
+  );
 
-  if (!data.length) {
+  if (!filteredSamples.length) {
     return null;
   }
+
+  const data = computePressureAndConsumption(filteredSamples);
 
   return (
     <Line
@@ -346,14 +385,37 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
         datasets: [
           {
             data,
+            parsing: {
+              xAxisKey: "time",
+              yAxisKey: "pressure",
+            },
+            yAxisID: "y",
+          },
+          {
+            data,
+            parsing: {
+              xAxisKey: "time",
+              yAxisKey: "consumption",
+            },
+            yAxisID: "y2",
+            // @ts-expect-error the current types do not know about the "tooltip" override
+            tooltip: {
+              callbacks: {
+                label: (ctx: TooltipItem<"line">) => {
+                  const consumption = ctx.parsed.y;
+
+                  return l10n.getString("graph-tooltip-air-consumption-label", {
+                    consumption: new FluentNumber(consumption, {
+                      maximumFractionDigits: 1,
+                    }),
+                  });
+                },
+              },
+            },
           },
         ],
       }}
       options={{
-        parsing: {
-          xAxisKey: "time",
-          yAxisKey: "pressure",
-        },
         locale: findMainLocale(l10n),
         elements: { point: { pointStyle: false } },
         scales: {
@@ -369,9 +431,24 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               scale.width = 60;
             },
           },
+          y2: {
+            type: "linear",
+            title: {
+              display: true,
+              text: l10n.getString("graph-axis-air-consumption-label"),
+            },
+            suggestedMin: 0,
+            position: "right",
+            grid: {
+              drawOnChartArea: false, // only want the grid lines for one axis to show up
+            },
+            afterFit(scale) {
+              // align all graphs
+              scale.width = 60;
+            },
+          },
           x: {
             type: "linear",
-
             title: {
               display: true,
               text: l10n.getString("graph-axis-time-label"),

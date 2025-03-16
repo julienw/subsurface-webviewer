@@ -29,6 +29,7 @@ graph-axis-depth-label = ← profondeur (m)
 graph-axis-speed-label = vitesse verticale (m/min)
 graph-axis-temperature-label = température de l'eau (°C)
 graph-axis-tank-pressure-label = pression du bloc (bar)
+graph-axis-air-consumption-label = consommation d'air (bar/min)
 
 # This is used as the title of all tooltips, indicating the duration of the dive
 # at this point.
@@ -37,3 +38,4 @@ graph-tooltip-depth-label = Profondeur: { $depth }
 graph-tooltip-speed-label = Vitesse verticale: { $speed }
 graph-tooltip-temperature-label = Température de l'eau: { $temperature }
 graph-tooltip-tank-pressure-label = Pression du bloc: { $pressure }{"\u202f"}bar
+graph-tooltip-air-consumption-label = Consommation d'air: { $consumption }{"\u202f"}bar/min

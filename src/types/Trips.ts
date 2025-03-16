@@ -1,4 +1,4 @@
-// [timestamp in sec, depth in mm, tank pressure in mbar, temperature in mkelvin]
+// [timestamp in min, depth in mm, tank pressure in mbar, temperature in mkelvin]
 export type Sample = [number, number, number, number];
 
 export interface DiveEvent {
