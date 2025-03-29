@@ -26,7 +26,7 @@
 
 .dive-summary:hover,
 .dive-details:hover {
-  background: #eee;
+  background: #444;
 }
 
 .dive-details {
@@ -35,4 +35,11 @@
 
 canvas {
   max-height: 20rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .dive-summary:hover,
+  .dive-details:hover {
+    background: #eee;
+  }
 }

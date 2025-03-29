@@ -146,10 +146,11 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   );
 }
 
+const lightMode = window.matchMedia("(prefers-color-scheme: light)");
 const COLORS = {
   ok: "#348037",
   warning: "#C89F38",
-  error: "#7D372D",
+  error: lightMode.matches ? "#7D372D" : "#fc745f",
 };
 
 function getSpeedColor(context: ScriptableContext<"bar">) {
