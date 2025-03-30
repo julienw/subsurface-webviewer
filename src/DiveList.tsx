@@ -152,6 +152,20 @@ const COLORS = {
   warning: "#C89F38",
   error: lightMode.matches ? "#7D372D" : "#fc745f",
 };
+const SPEED_LIMITS = {
+  goingDown: {
+    warning: 20,
+    error: 30,
+  },
+  goingUp: {
+    warning: 10,
+    error: 15,
+  },
+  goingUpClose: {
+    warning: 6,
+    error: 10,
+  },
+} as const;
 
 function getSpeedColor(context: ScriptableContext<"bar">) {
   const { speed, depth } = context.raw as {
@@ -160,24 +174,24 @@ function getSpeedColor(context: ScriptableContext<"bar">) {
     depth: number;
   };
 
-  let color;
+  let color = COLORS.ok;
   if (speed < 0) {
-    if (speed > -20) {
-      color = COLORS.ok;
-    } else if (speed < -30) {
+    if (speed < -SPEED_LIMITS.goingDown.error) {
       color = COLORS.error;
-    } else {
+    } else if (speed < -SPEED_LIMITS.goingDown.warning) {
+      color = COLORS.warning;
+    }
+  } else if (depth < 6) {
+    if (speed > SPEED_LIMITS.goingUpClose.error) {
+      color = COLORS.error;
+    } else if (speed > SPEED_LIMITS.goingUpClose.warning) {
       color = COLORS.warning;
     }
   } else {
-    if (depth < 6 && speed > 6) {
+    if (speed > SPEED_LIMITS.goingUp.error) {
       // > 6m, the speed should be slower
       color = COLORS.error;
-    } else if (speed < 12) {
-      color = COLORS.ok;
-    } else if (speed > 17) {
-      color = COLORS.error;
-    } else {
+    } else if (speed > SPEED_LIMITS.goingUp.warning) {
       color = COLORS.warning;
     }
   }
