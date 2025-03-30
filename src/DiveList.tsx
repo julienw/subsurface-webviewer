@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Localized,
   useLocalization,
@@ -12,13 +12,17 @@ import {
 } from "@fluent/react";
 import { FluentDateTime, FluentNumber } from "@fluent/bundle";
 import "chart.js/auto";
+import annotationPlugin from "chartjs-plugin-annotation";
 import { Line, Bar } from "react-chartjs-2";
+import { Chart } from "chart.js";
 import classnames from "classnames";
 import { useAppSelector } from "./store/hooks";
 
 import type { Trip, Dive, Sample } from "./types";
 import type { ScriptableContext, TooltipItem } from "chart.js";
 import "./DiveList.css";
+
+Chart.register(annotationPlugin);
 
 function findMainLocale(l10n: ReactLocalization) {
   const [mainBundle] = l10n.bundles;
@@ -201,6 +205,20 @@ function getSpeedColor(context: ScriptableContext<"bar">) {
 
 function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
+  const lang = document.documentElement.getAttribute("lang") ?? undefined;
+  const meterMinuteFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(
+        lang,
+
+        {
+          style: "unit",
+          unit: "meter-per-minute",
+          maximumFractionDigits: 1,
+        },
+      ),
+    [lang],
+  );
 
   return (
     <Bar
@@ -253,6 +271,92 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
             callbacks: {
               title: getTooltipTitleCallback(l10n),
               label: getDepthAndSpeedTooltipLabelCallback(l10n),
+            },
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: "line",
+                yMin: SPEED_LIMITS.goingUp.error,
+                yMax: SPEED_LIMITS.goingUp.error,
+                borderColor: COLORS.error,
+                borderWidth: 1,
+                drawTime: "beforeDatasetsDraw",
+                label: {
+                  display: true,
+                  position: "end",
+                  content: meterMinuteFormatter.format(
+                    SPEED_LIMITS.goingUp.error,
+                  ),
+                },
+              },
+              line2: {
+                type: "line",
+                yMin: SPEED_LIMITS.goingUp.warning,
+                yMax: SPEED_LIMITS.goingUp.warning,
+                borderColor: COLORS.warning,
+                borderWidth: 1,
+                drawTime: "beforeDatasetsDraw",
+                label: {
+                  display: true,
+                  position: "end",
+                  content: meterMinuteFormatter.format(
+                    SPEED_LIMITS.goingUp.warning,
+                  ),
+                },
+              },
+              line3: {
+                type: "line",
+                yMin: SPEED_LIMITS.goingUpClose.warning,
+                yMax: SPEED_LIMITS.goingUpClose.warning,
+                borderColor: COLORS.warning,
+                borderWidth: 1,
+                borderDash: [5],
+                drawTime: "beforeDatasetsDraw",
+                label: {
+                  display: true,
+                  position: "end",
+                  content: meterMinuteFormatter.format(
+                    SPEED_LIMITS.goingUpClose.warning,
+                  ),
+                },
+              },
+              line4: {
+                type: "line",
+                yMin: -SPEED_LIMITS.goingDown.warning,
+                yMax: -SPEED_LIMITS.goingDown.warning,
+                borderColor: COLORS.warning,
+                borderWidth: 1,
+                display: speedAndDepth.some(
+                  ({ speed }) => speed < -SPEED_LIMITS.goingDown.warning,
+                ),
+                drawTime: "beforeDatasetsDraw",
+                label: {
+                  display: true,
+                  position: "end",
+                  content: meterMinuteFormatter.format(
+                    SPEED_LIMITS.goingDown.warning,
+                  ),
+                },
+              },
+              line5: {
+                type: "line",
+                yMin: -SPEED_LIMITS.goingDown.error,
+                yMax: -SPEED_LIMITS.goingDown.error,
+                borderColor: COLORS.error,
+                borderWidth: 1,
+                display: speedAndDepth.some(
+                  ({ speed }) => speed < -SPEED_LIMITS.goingDown.error,
+                ),
+                drawTime: "beforeDatasetsDraw",
+                label: {
+                  display: true,
+                  position: "end",
+                  content: meterMinuteFormatter.format(
+                    SPEED_LIMITS.goingDown.error,
+                  ),
+                },
+              },
             },
           },
         },
