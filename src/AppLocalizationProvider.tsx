@@ -13,10 +13,23 @@ import { LocalizationProvider, ReactLocalization } from "@fluent/react";
 // List all available locales.
 const AVAILABLE_LOCALES = ["en-US", "fr-FR"];
 
+// This list has been copied from the l20n library in the Firefox OS project
+// (ancestor of Fluent):
+// https://github.com/mozilla-b2g/gaia/blob/975a35c0f5010df341e96d6c5ec60217f5347412/shared/js/intl/l20n-client.js#L31-L35
+const RTL_LOCALES = ["ar", "he", "fa", "ps", "ur"];
+
 // Negotiate user language.
 const languages = negotiateLanguages(navigator.languages, AVAILABLE_LOCALES, {
   defaultLocale: "en-US",
 });
+
+const primaryLocale = languages[0];
+const direction = RTL_LOCALES.includes(primaryLocale.slice(0, 2))
+  ? "rtl"
+  : "ltr";
+
+document.documentElement.setAttribute("dir", direction);
+document.documentElement.setAttribute("lang", primaryLocale);
 
 const messagesPromise = languages.map(getMessages);
 
