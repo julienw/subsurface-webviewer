@@ -282,6 +282,9 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
                 borderColor: COLORS.error,
                 borderWidth: 1,
                 drawTime: "beforeDatasetsDraw",
+                display: speedAndDepth.some(
+                  ({ speed }) => speed > SPEED_LIMITS.goingUp.error,
+                ),
                 label: {
                   display: true,
                   position: "end",
@@ -297,6 +300,9 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
                 borderColor: COLORS.warning,
                 borderWidth: 1,
                 drawTime: "beforeDatasetsDraw",
+                display: speedAndDepth.some(
+                  ({ speed }) => speed > SPEED_LIMITS.goingUp.warning,
+                ),
                 label: {
                   display: true,
                   position: "end",
@@ -313,6 +319,10 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
                 borderWidth: 1,
                 borderDash: [5],
                 drawTime: "beforeDatasetsDraw",
+                display: speedAndDepth.some(
+                  ({ speed, depth }) =>
+                    depth < 6 && speed > SPEED_LIMITS.goingUpClose.warning,
+                ),
                 label: {
                   display: true,
                   position: "end",
