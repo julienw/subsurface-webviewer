@@ -21,7 +21,7 @@ function getDataUrl({ user }: { user: string }) {
 
 export const fetchDataForUser = createAsyncThunk(
   "data/fetchDataStatus",
-  async (login: { user: string; password: string }) => {
+  async (login: { user: string; password: string }): Promise<Trip[]> => {
     if (window.location.search.includes("fake")) {
       const searchParams = new URLSearchParams(window.location.search);
       const fakeDataName = searchParams.get("fake");
@@ -30,7 +30,7 @@ export const fetchDataForUser = createAsyncThunk(
         console.error(`Unknown fake data ${fakeDataName}`);
         fakeFile = `../mock-data/julien.ts`;
       }
-      return fakeData[fakeFile]();
+      return (await fakeData[fakeFile]()) as Trip[];
     }
 
     if (!login.user) {
@@ -76,7 +76,6 @@ export const dataSlice = createSlice({
         state.data = null;
       })
       .addCase(fetchDataForUser.fulfilled, (state, action) => {
-        // @ts-expect-error We'll deal with that later -- or not
         state.data = action.payload;
         state.loading = "succeeded";
       });
