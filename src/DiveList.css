@@ -37,6 +37,10 @@ canvas {
   max-height: 20rem;
 }
 
+.share-dive {
+  margin-left: auto;
+}
+
 @media (prefers-color-scheme: light) {
   .dive-summary:hover,
   .dive-details:hover {

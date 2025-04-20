@@ -17,6 +17,7 @@ import { Line, Bar } from "react-chartjs-2";
 import { Chart } from "chart.js";
 import classnames from "classnames";
 import { useAppSelector } from "./store/hooks";
+import { ShareDive } from "./ShareDive";
 
 import type { Trip, Dive, Sample } from "./types";
 import type { ScriptableContext, TooltipItem } from "chart.js";
@@ -656,6 +657,7 @@ export function Dive({
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
         {tripName ? tripName + ": " : null}({dive.number}) {dive.location}
+        <ShareDive className="share-dive" dive={dive} />
       </div>
       <div className="dive-details" onClick={() => toggleShow(!shown)}>
         <div>

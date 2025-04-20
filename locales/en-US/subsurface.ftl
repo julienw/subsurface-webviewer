@@ -4,6 +4,8 @@ welcome-to-subsurface = Welcome to { -brand-name }
 hello-user = Hello { $user }!
 hide-dive = Hide
 show-dive = Show
+share-dive = Share this dive
+url-copied = URL copied!
 
 # The $date, $time, $startTime and $endTime variables are already formatted
 # through the use of FluentDateTime.
