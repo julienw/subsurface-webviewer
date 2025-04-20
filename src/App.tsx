@@ -9,6 +9,7 @@ import { Localized } from "@fluent/react";
 import { useAppSelector } from "./store/hooks";
 import { Login } from "./Login";
 import { DiveList } from "./DiveList";
+import { SingleDive } from "./SingleDive";
 import "./App.css";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Localized id="welcome-to-subsurface" />
       <Router hook={useHashLocation}>
         <Switch>
+          <Route path="/single-dive/:compressedDive" component={SingleDive} />
           <Route>
             <Login />
             {loadingState === "succeeded" && user ? (
