@@ -5,6 +5,9 @@ hello-user = Bonjour { $user }{"\u202f"}!
 hide-dive = Cacher
 show-dive = Montrer
 share-dive = Partager
+  .title =
+    Vos données ne sont jamais stockées. Les données de cette plongée sont
+    partagées de manière sérialisée dans une URL.
 url-copied = URL copiée !
 
 # The $date, $time, $startTime and $endTime variables are already formatted

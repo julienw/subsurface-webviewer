@@ -5,6 +5,9 @@ hello-user = Hello { $user }!
 hide-dive = Hide
 show-dive = Show
 share-dive = Share
+  .title =
+    Your data is never stored anywhere. The data for this dive are shared in a
+    serialized form within an URL.
 url-copied = URL copied!
 
 # The $date, $time, $startTime and $endTime variables are already formatted

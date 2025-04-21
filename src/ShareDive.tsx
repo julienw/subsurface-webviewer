@@ -41,7 +41,7 @@ export function ShareDive({ dive, className }: Props) {
 
   return (
     <div className={cx(className, "share-dive-container")}>
-      <Localized id="share-dive">
+      <Localized id="share-dive" attrs={{ title: true }}>
         <button className="share-dive-button" type="button" onClick={onClick}>
           Share this dive
         </button>
