@@ -4,6 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import "./polyfills.ts";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";

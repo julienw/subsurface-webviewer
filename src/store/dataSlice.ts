@@ -2,14 +2,26 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const fakeData = import.meta.glob("../mock-data/*", { import: "default" });
 import type { Trip } from "../types";
 
-function getDataUrl({ user, password }: { user: string; password: string }) {
-  const auth = encodeURIComponent(user) + ":" + encodeURIComponent(password);
-  return `https://${auth}@cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js`;
+function getBasicAuthHeader({
+  user,
+  password,
+}: {
+  user: string;
+  password: string;
+}) {
+  const auth = user + ":" + password;
+  const textEnc = new TextEncoder();
+  const encodedAuth = textEnc.encode(auth);
+  return "Basic " + encodedAuth.toBase64();
+}
+
+function getDataUrl({ user }: { user: string }) {
+  return `https://cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js?_uncache=${Date.now()}`;
 }
 
 export const fetchDataForUser = createAsyncThunk(
   "data/fetchDataStatus",
-  (login: { user: string; password: string }) => {
+  async (login: { user: string; password: string }): Promise<Trip[]> => {
     if (window.location.search.includes("fake")) {
       const searchParams = new URLSearchParams(window.location.search);
       const fakeDataName = searchParams.get("fake");
@@ -18,7 +30,7 @@ export const fetchDataForUser = createAsyncThunk(
         console.error(`Unknown fake data ${fakeDataName}`);
         fakeFile = `../mock-data/julien.ts`;
       }
-      return fakeData[fakeFile]();
+      return (await fakeData[fakeFile]()) as Trip[];
     }
 
     if (!login.user) {
@@ -29,22 +41,16 @@ export const fetchDataForUser = createAsyncThunk(
       throw new Error("No password has been provided");
     }
 
-    const url = getDataUrl(login) + "?_uncache=" + Date.now();
-    return new Promise((resolve, reject) => {
-      const scriptElement = document.createElement("script");
-      scriptElement.src = url;
-      scriptElement.addEventListener(
-        "load",
-        () => {
-          // @ts-expect-error Typescript doesn't know about window.trips.
-          resolve(window.trips as Trip[]);
-          scriptElement.remove();
-        },
-        { once: true },
-      );
-      scriptElement.addEventListener("error", (e) => reject(e.error));
-      document.head.append(scriptElement);
+    const res = await fetch(getDataUrl(login), {
+      headers: { Authorization: getBasicAuthHeader(login) },
     });
+    const trips = await res.text();
+    const firstEqualSign = trips.indexOf("=");
+    if (firstEqualSign < 0) {
+      return [];
+    }
+    const strJson = trips.slice(firstEqualSign + 1);
+    return JSON.parse(strJson);
   },
 );
 
@@ -70,7 +76,6 @@ export const dataSlice = createSlice({
         state.data = null;
       })
       .addCase(fetchDataForUser.fulfilled, (state, action) => {
-        // @ts-expect-error We'll deal with that later -- or not
         state.data = action.payload;
         state.loading = "succeeded";
       });
