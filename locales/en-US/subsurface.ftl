@@ -41,3 +41,4 @@ graph-tooltip-speed-label = Vertical speed: { $speed }
 graph-tooltip-temperature-label = Water temperature: { $temperature }
 graph-tooltip-tank-pressure-label = Tank pressure: { $pressure }{"\u202f"}bar
 graph-tooltip-air-consumption-label = Air consumption: { $consumption }{"\u202f"}bar/min
+graph-label-mean-depth = Avg depth: { $meanDepth }

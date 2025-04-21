@@ -41,3 +41,4 @@ graph-tooltip-speed-label = Vitesse verticale: { $speed }
 graph-tooltip-temperature-label = Température de l'eau: { $temperature }
 graph-tooltip-tank-pressure-label = Pression du bloc: { $pressure }{"\u202f"}bar
 graph-tooltip-air-consumption-label = Consommation d'air: { $consumption }{"\u202f"}bar/min
+graph-label-mean-depth = Prof. moy.: { $meanDepth }

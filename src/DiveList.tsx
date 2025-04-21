@@ -31,13 +31,20 @@ function findMainLocale(l10n: ReactLocalization) {
   return mainLocale;
 }
 
-type SpeedAndDepth = { speed: number; time: number; depth: number };
+type SpeedAndDepth = {
+  speed: number;
+  time: number;
+  depth: number;
+  meanDepth: number;
+};
 function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
+  let sum = samples[0][1] / 1000;
   const data = [
     {
       speed: 0,
       time: samples[0][0],
       depth: samples[0][1] / 1000,
+      meanDepth: sum,
     },
   ];
 
@@ -45,10 +52,14 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
     const interval = samples[i][0] - samples[i - 1][0];
     const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
     const speed = -diff / interval; // minus because I want to display negative speed when going down.
+    const depth = samples[i][1] / 1000;
+    sum += depth;
+
     data.push({
       speed,
       time: samples[i][0],
-      depth: samples[i][1] / 1000,
+      depth,
+      meanDepth: sum / (i + 1),
     });
   }
 
@@ -91,20 +102,31 @@ const getDepthAndSpeedTooltipLabelCallback =
 function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
   const locale = findMainLocale(l10n);
+
   return (
     <Line
       data={{
         datasets: [
           {
             data: speedAndDepth,
+            parsing: {
+              xAxisKey: "time",
+              yAxisKey: "depth",
+            },
+            borderColor: "#36a2eb",
+          },
+          {
+            data: speedAndDepth,
+            parsing: {
+              xAxisKey: "time",
+              yAxisKey: "meanDepth",
+            },
+            borderColor: "#888",
+            borderWidth: 1,
           },
         ],
       }}
       options={{
-        parsing: {
-          xAxisKey: "time",
-          yAxisKey: "depth",
-        },
         locale,
         elements: { point: { pointStyle: false } },
         scales: {
@@ -140,9 +162,33 @@ function DepthGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
           },
           tooltip: {
             displayColors: false,
+            filter: (item: TooltipItem<"line">) => item.datasetIndex === 0,
             callbacks: {
               title: getTooltipTitleCallback(l10n),
               label: getDepthAndSpeedTooltipLabelCallback(l10n),
+            },
+          },
+          annotation: {
+            annotations: {
+              meanDepth: {
+                type: "label",
+                xValue: (context) => context.chart.scales.x.max,
+                yValue: speedAndDepth.at(-1)!.meanDepth,
+                position: { x: "end" },
+                adjustScaleRange: true,
+                content: l10n.getString("graph-label-mean-depth", {
+                  meanDepth: new FluentNumber(speedAndDepth.at(-1)!.meanDepth, {
+                    style: "unit",
+                    unit: "meter",
+                    maximumFractionDigits: 1,
+                  }),
+                }),
+                backgroundColor: "#666",
+                borderRadius: 6,
+                color: "white",
+                padding: 6,
+                font: { weight: "bold" },
+              },
             },
           },
         },
@@ -206,19 +252,15 @@ function getSpeedColor(context: ScriptableContext<"bar">) {
 
 function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
   const { l10n } = useLocalization();
-  const lang = document.documentElement.getAttribute("lang") ?? undefined;
+  const locale = findMainLocale(l10n);
   const meterMinuteFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(
-        lang,
-
-        {
-          style: "unit",
-          unit: "meter-per-minute",
-          maximumFractionDigits: 1,
-        },
-      ),
-    [lang],
+      new Intl.NumberFormat(locale, {
+        style: "unit",
+        unit: "meter-per-minute",
+        maximumFractionDigits: 1,
+      }),
+    [locale],
   );
 
   return (
@@ -235,7 +277,7 @@ function SpeedGraph({ speedAndDepth }: { speedAndDepth: SpeedAndDepth[] }) {
       }}
       options={{
         parsing: { xAxisKey: "time", yAxisKey: "speed" },
-        locale: findMainLocale(l10n),
+        locale,
         scales: {
           x: {
             type: "linear",
