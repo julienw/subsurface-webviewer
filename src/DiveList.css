@@ -16,7 +16,7 @@
   user-select: none;
   align-items: center;
   transition: background 300ms;
-  gap: 2rem;
+  gap: 1.5%;
 }
 
 .dive-summary--isShown {
