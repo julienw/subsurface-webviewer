@@ -17,6 +17,7 @@ import { Line, Bar } from "react-chartjs-2";
 import { Chart } from "chart.js";
 import classnames from "classnames";
 import { useAppSelector } from "./store/hooks";
+import { ShareDive } from "./ShareDive";
 
 import type { Trip, Dive, Sample } from "./types";
 import type { ScriptableContext, TooltipItem } from "chart.js";
@@ -626,15 +627,23 @@ function DiveGraphs({ dive }: { dive: Dive }) {
   );
 }
 
-function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
-  const [shown, toggleShow] = useState(false);
+export function Dive({
+  tripName,
+  dive,
+  initialShow,
+}: {
+  tripName?: string;
+  dive: Dive;
+  initialShow?: boolean;
+}) {
+  const [shown, toggleShow] = useState(initialShow);
 
   const dateTime = Date.parse(`${dive.date}T${dive.time}`);
   const endTime = dateTime + dive.duration * 1000;
-  dive = {
+  const diveInMinutes = {
     ...dive,
     samples: dive.samples.map(([time, ...rest]) => [time / 60, ...rest]),
-  };
+  } as Dive;
 
   return (
     <div className="dive-line">
@@ -647,7 +656,8 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
         <button type="button">
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
-        {trip.name}: ({dive.number}) {dive.location}
+        {tripName ? tripName + ": " : null}({dive.number}) {dive.location}
+        <ShareDive className="share-dive" dive={dive} />
       </div>
       <div className="dive-details" onClick={() => toggleShow(!shown)}>
         <div>
@@ -691,7 +701,7 @@ function Dive({ trip, dive }: { trip: Trip; dive: Dive }) {
           />
         </div>
       </div>
-      {shown ? <DiveGraphs dive={dive} /> : null}
+      {shown ? <DiveGraphs dive={diveInMinutes} /> : null}
     </div>
   );
 }
@@ -703,7 +713,7 @@ function TripInfo({ trip }: { trip: Trip }) {
         .slice()
         .reverse()
         .map((dive) => (
-          <Dive key={dive.number} trip={trip} dive={dive} />
+          <Dive key={dive.number} tripName={trip.name} dive={dive} />
         ))}
     </>
   );
