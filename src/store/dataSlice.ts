@@ -15,8 +15,45 @@ function getBasicAuthHeader({
   return "Basic " + encodedAuth.toBase64();
 }
 
-function getDataUrl({ user }: { user: string }) {
-  return `https://cloud.subsurface-divelog.org/user/${user}/dives.html_files/file.js?_uncache=${Date.now()}`;
+function getDataUrl({
+  user,
+  filetype,
+}: {
+  user: string;
+  filetype: "json" | "js";
+}) {
+  const filename = filetype === "json" ? "trips.json" : "file.js";
+
+  return `https://cloud.subsurface-divelog.org/user/${user}/dives.html_files/${filename}?_uncache=${Date.now()}`;
+}
+
+async function fetchDataWithJsonFile(login: {
+  user: string;
+  password: string;
+}) {
+  const res = await fetch(getDataUrl({ user: login.user, filetype: "json" }), {
+    headers: { Authorization: getBasicAuthHeader(login) },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  return await res.json();
+}
+
+async function fetchDataWithJsFile(login: { user: string; password: string }) {
+  const res = await fetch(getDataUrl({ user: login.user, filetype: "js" }), {
+    headers: { Authorization: getBasicAuthHeader(login) },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  const trips = await res.text();
+  const firstEqualSign = trips.indexOf("=");
+  if (firstEqualSign < 0) {
+    return null;
+  }
+  const strJson = trips.slice(firstEqualSign + 1);
+  return JSON.parse(strJson);
 }
 
 export const fetchDataForUser = createAsyncThunk(
@@ -41,16 +78,19 @@ export const fetchDataForUser = createAsyncThunk(
       throw new Error("No password has been provided");
     }
 
-    const res = await fetch(getDataUrl(login), {
-      headers: { Authorization: getBasicAuthHeader(login) },
-    });
-    const trips = await res.text();
-    const firstEqualSign = trips.indexOf("=");
-    if (firstEqualSign < 0) {
-      return [];
+    let result = await fetchDataWithJsFile(login);
+    if (result) {
+      return result;
     }
-    const strJson = trips.slice(firstEqualSign + 1);
-    return JSON.parse(strJson);
+
+    result = await fetchDataWithJsonFile(login);
+    if (result) {
+      return result;
+    }
+
+    throw new Error(
+      `Neither trips.json or file.js are available. Bailing out.`,
+    );
   },
 );
 
