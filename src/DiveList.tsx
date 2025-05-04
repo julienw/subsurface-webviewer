@@ -48,9 +48,15 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
     },
   ];
 
+  const possibleMin = [];
+  const possibleMax = [];
+
   for (let i = 1; i < samples.length; i++) {
     const interval = samples[i][0] - samples[i - 1][0];
-    const diff = (samples[i][1] - samples[i - 1][1]) / 1000;
+    const thisValue = samples[i][1];
+    const prevValue = samples[i - 1][1];
+    const nextValue = i < samples.length - 1 ? samples[i + 1][1] : thisValue;
+    const diff = (thisValue - prevValue) / 1000;
     const speed = -diff / interval; // minus because I want to display negative speed when going down.
     const depth = samples[i][1] / 1000;
     sum += depth;
@@ -61,7 +67,18 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
       depth,
       meanDepth: sum / (i + 1),
     });
+
+    if (thisValue > 1000 && thisValue > prevValue && thisValue > nextValue) {
+      possibleMax.push(i);
+    }
+    if (thisValue > 1000 && thisValue < prevValue && thisValue < nextValue) {
+      possibleMin.push(i);
+    }
   }
+
+  // Let's see if the possible mins and maxs are really local mins and max. Is
+  // it a min and max over 2 minutes centered on the value?
+  const localMin = possibleMin.filter((minIndex) => {});
 
   return data;
 }
@@ -658,7 +675,10 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
 }
 
 function DiveGraphs({ dive }: { dive: Dive }) {
-  const speedAndDepth = computeSpeedAndDepth(dive.samples);
+  const speedAndDepth = useMemo(
+    () => computeSpeedAndDepth(dive.samples),
+    [dive.samples],
+  );
   return (
     <div>
       <DepthGraph speedAndDepth={speedAndDepth} />
