@@ -66,10 +66,10 @@ if (!ReadableStream.prototype.values) {
         if (value !== undefined) yield value;
       }
     } finally {
-      reader.releaseLock();
       if (!options.preventCancel) {
         await reader.cancel();
       }
+      reader.releaseLock();
     }
   };
 }
