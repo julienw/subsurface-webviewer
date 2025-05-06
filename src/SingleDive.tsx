@@ -13,7 +13,7 @@ type Props = {
 export function SingleDive({ params: { compressedDive } }: Props) {
   return (
     <Suspense fallback={null}>
-      <CompressedDive compressedDive={compressedDive} />;
+      <CompressedDive compressedDive={compressedDive} />
     </Suspense>
   );
 }
