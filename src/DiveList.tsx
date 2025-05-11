@@ -698,7 +698,8 @@ export function Dive({
         <button type="button">
           <Localized id={shown ? "hide-dive" : "show-dive"} />
         </button>
-        {tripName ? tripName + ": " : null}({dive.number}) {dive.location}
+        {tripName ? tripName + ": " : null}({dive.subsurface_number}){" "}
+        {dive.location}
         <ShareDive className="share-dive" dive={dive} />
       </div>
       <div className="dive-details" onClick={() => toggleShow(!shown)}>
