@@ -37,7 +37,7 @@ if (!Uint8Array.fromBase64) {
       alphabet: "base64" | "base64url";
       lastChunkHandling: "loose" | "strict" | "stop-before-partial";
     }> = {},
-  ): Uint8Array {
+  ): Uint8Array<ArrayBuffer> {
     if (options.alphabet === "base64url") {
       base64 = base64.replaceAll("-", "+").replaceAll("_", "/");
     }
