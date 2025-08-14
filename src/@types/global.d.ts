@@ -5,8 +5,8 @@ interface Uint8ArrayConstructor {
       alphabet: "base64" | "base64url";
       lastChunkHandling: "loose" | "strict" | "stop-before-partial";
     }>,
-  ) => Uint8Array;
-  fromHex: (hex: string) => Uint8Array;
+  ) => Uint8Array<ArrayBuffer>;
+  fromHex: (hex: string) => Uint8Array<ArrayBuffer>;
 }
 
 interface Uint8Array {
