@@ -18,7 +18,7 @@
     "@fluent/bundle": "^0.19.1",
     "@fluent/langneg": "^0.7.0",
     "@fluent/react": "^0.15.2",
-    "@reduxjs/toolkit": "^2.8.2",
+    "@reduxjs/toolkit": "^2.9.0",
     "chart.js": "^4.5.0",
     "chartjs-plugin-annotation": "^3.1.0",
     "classnames": "^2.5.1",
