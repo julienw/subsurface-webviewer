@@ -8,6 +8,7 @@ import { Dive } from "./DiveList";
 import { fromGzippedBase64 } from "./base64";
 
 export function CompressedDive({ compressedDive }: { compressedDive: string }) {
+  // eslint-disable-next-line react-hooks/use-memo -- async useMemo is intentional for use() hook
   const uncompressedDivePromise = useMemo(async () => {
     const magicString = compressedDive.slice(0, 2);
     switch (magicString) {
