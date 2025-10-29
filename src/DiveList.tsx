@@ -67,8 +67,10 @@ function computeSpeedAndDepth(samples: Sample[]): SpeedAndDepth[] {
 }
 
 const getTooltipTitleCallback =
-  (l10n: ReactLocalization) => (items: TooltipItem<"bar" | "line">[]) => {
+  (l10n: ReactLocalization) =>
+  <T extends TooltipItem<"bar"> | TooltipItem<"line">>(items: T[]) => {
     const time = items[0].parsed.x;
+    if (time === null) return;
     const minutes = Math.floor(time);
     const seconds = Math.floor((time - minutes) * 60);
     return l10n.getString("graph-tooltip-title", {
@@ -78,7 +80,8 @@ const getTooltipTitleCallback =
   };
 
 const getDepthAndSpeedTooltipLabelCallback =
-  (l10n: ReactLocalization) => (item: TooltipItem<"bar" | "line">) => {
+  (l10n: ReactLocalization) =>
+  <T extends TooltipItem<"bar"> | TooltipItem<"line">>(item: T) => {
     const { speed, depth } = item.raw as SpeedAndDepth;
 
     return [
@@ -482,6 +485,7 @@ function TemperatureGraph({ dive: { samples } }: { dive: Dive }) {
               title: getTooltipTitleCallback(l10n),
               label: (ctx) => {
                 const temperature = ctx.parsed.y;
+                if (temperature === null) return;
 
                 return l10n.getString("graph-tooltip-temperature-label", {
                   temperature: new FluentNumber(temperature, {
@@ -570,11 +574,11 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               yAxisKey: "consumption",
             },
             yAxisID: "y2",
-            // @ts-expect-error the current types do not know about the "tooltip" override
             tooltip: {
               callbacks: {
                 label: (ctx: TooltipItem<"line">) => {
                   const consumption = ctx.parsed.y;
+                  if (consumption === null) return;
 
                   return l10n.getString("graph-tooltip-air-consumption-label", {
                     consumption: new FluentNumber(consumption, {
@@ -642,6 +646,7 @@ function TankGraph({ dive: { samples } }: { dive: Dive }) {
               title: getTooltipTitleCallback(l10n),
               label: (ctx) => {
                 const pressure = ctx.parsed.y;
+                if (pressure === null) return;
 
                 return l10n.getString("graph-tooltip-tank-pressure-label", {
                   pressure: new FluentNumber(pressure, {
